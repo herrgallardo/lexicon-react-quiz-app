@@ -36,3 +36,36 @@
     transform: rotate(360deg);
   }
 }
+.App-header {
+  text-align: center;
+  padding: 1rem;
+}
+
+.welcome-area {
+  margin-bottom: 1rem; /* Ger lite avstånd mellan välkomsttext och raden nedanför */
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrerar innehållet horisontellt */
+  gap: 2rem; /* Avståndet mellan logo och navigationsmeny */
+}
+
+.logo-container img {
+  height: 80px; /* Justera storleken efter önskemål */
+}
+
+.navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
