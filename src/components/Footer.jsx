@@ -7,7 +7,7 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      <p>&copy; {year} Lexicon Quiz App. All rights reserved.</p>
+      <p>© {year} Lexicon Quiz App — Built with React by Team Awesome</p>
     </footer>
   );
 };
