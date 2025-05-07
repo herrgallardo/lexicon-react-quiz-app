@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import QuizLayout from '../components/QuizLayout';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { useQuiz } from '../hooks/useTriviaHooks'; // Adjust if renamed
-
-const mockUser = {
-  name: 'Guest',
-  avatar: '👤', // Replace with real user data later
-};
+import QuizUserInfo from '../components/QuizUserInfo';
+import QuizMeta from '../components/QuizMeta';
+import AnswerButtons from '../components/AnswerButtons';
+import QuizComplete from '../components/QuizComplete';
+import Leaderboard from '../components/Leaderboard';
+import { useQuiz } from '../hooks/useTriviaHooks';
+import { AuthContext } from '../context/AuthContext';
+import { saveScore, getTopScores } from '../services/firestoreService';
 
 const Quiz = () => {
   const {
@@ -22,66 +22,69 @@ const Quiz = () => {
     answerQuestion,
   } = useQuiz();
 
+  const { user } = useContext(AuthContext);
+  const [topScores, setTopScores] = useState([]);
+
   useEffect(() => {
-    loadQuiz(); // Fetch questions when component mounts
+    loadQuiz();
+    (async () => {
+      const scores = await getTopScores();
+      setTopScores(scores);
+    })();
   }, [loadQuiz]);
+
+  useEffect(() => {
+    if (quizCompleted && user) {
+      saveScore({ userId: user.uid, email: user.email, score });
+    }
+  }, [quizCompleted, user, score]);
+
+  const handlePlayAgain = async () => {
+    await saveScore({ userId: user.uid, email: user.email, score });
+    const latestTopScores = await getTopScores();
+    setTopScores(latestTopScores);
+    loadQuiz();
+  };
 
   return (
     <QuizLayout>
       <div className="quiz-container">
-        {/* 👤 Always visible user info */}
-        <div className="quiz-user">
-          <div
-            className="user-avatar"
-            onClick={() => alert('User profile coming soon!')}
-          >
-            <FontAwesomeIcon icon={faUserCircle} />
-          </div>
-          <span className="user-name">{mockUser.name}</span>
-        </div>
+        <QuizUserInfo user={user} />
 
-        {/* 🔄 Loading and error */}
         {loading && <p>Loading questions...</p>}
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
-        {/* 🧠 Active quiz */}
-        {!loading && !error && currentQuestion && !quizCompleted && (
-          <>
-            <div className="quiz-meta">
-              <span>
-                Question {currentIndex + 1}/{questions.length}
-              </span>
-              <span>Score: {score}</span>
-            </div>
+        {!loading &&
+          !error &&
+          currentQuestion &&
+          !quizCompleted &&
+          questions.length > 0 && (
+            <>
+              <QuizMeta
+                currentIndex={currentIndex}
+                totalQuestions={questions.length}
+                score={score}
+              />
+              <h2 className="quiz-question">{currentQuestion.question}</h2>
+              <AnswerButtons
+                answers={currentQuestion.allAnswers}
+                onAnswer={answerQuestion}
+              />
+            </>
+          )}
 
-            <h2 className="quiz-question">{currentQuestion.question}</h2>
-
-            <div className="answers">
-              {currentQuestion.allAnswers.map((answer, index) => (
-                <button
-                  key={index}
-                  className="answer-button"
-                  onClick={() => answerQuestion(answer)}
-                >
-                  {answer}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* 🎉 Quiz completed */}
         {quizCompleted && (
-          <div className="quiz-complete">
-            <h2>🎉 Great job!</h2>
-            <p>
-              You scored {score} out of {questions.length}.
-            </p>
-            <button className="answer-button" onClick={() => loadQuiz()}>
-              Play Again
-            </button>
-          </div>
+          <QuizComplete
+            score={score}
+            total={questions.length}
+            user={user}
+            onPlayAgain={handlePlayAgain}
+          />
         )}
+
+        <div className="leaderboard-container">
+          <Leaderboard scores={topScores} />
+        </div>
       </div>
     </QuizLayout>
   );

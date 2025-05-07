@@ -1,36 +1,24 @@
 /* src/index.css */
 
-/* 
-===================================================
-Base Styles for HTML and Body
----------------------------------------------------
-- Removes default margin/padding
-- Sets full-height layout
-- Prevents scroll gaps with overflow: hidden
-- Applies system-native fonts for performance and polish
-- Enables font smoothing for crisper text rendering
-===================================================
-*/
+/* ------------------------------
+   Base Styles
+------------------------------ */
 html,
 body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: transparent;
 }
 
-/* 
-===================================================
-Code Font
----------------------------------------------------
-Sets a monospace font stack for inline <code> elements.
-Useful for future dev tools or code-related quiz content.
-===================================================
-*/
+/* ------------------------------
+   Inline Code Font
+------------------------------ */
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
