@@ -1,7 +1,7 @@
 import React from 'react';
 
 const User = () => {
-  return <div>Välkommen till User-sidan!</div>;
+  return <div>Welcome to the User-page!</div>;
 };
 
 export default User;

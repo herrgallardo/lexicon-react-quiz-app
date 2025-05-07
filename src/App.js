@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         {/* Välkomstsektion */}
         <div className="welcome-area">
-          <h1>Välkommen till Min React Quiz App!</h1>
+          <h1>Welcome to Min React Quiz App!</h1>
         </div>
 
         {/* Rad med logo och navigation */}
