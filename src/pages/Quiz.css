@@ -1,0 +1,143 @@
+/* 
+ * Styles for the main Quiz page
+ * This file contains layout styles for the quiz page and various states (loading, error, etc.)
+ */
+
+/* Main container for the entire quiz page */
+.quiz-page {
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center content horizontally */
+  width: 100%; /* Take full available width */
+  max-width: 1200px; /* Limit maximum width */
+  margin: 0 auto; /* Center horizontally */
+  padding: 2rem 1rem; /* Space inside container */
+}
+
+/* Container for the quiz content area */
+.quiz-content {
+  width: 100%; /* Take full available width */
+  max-width: 500px; /* Limit maximum width */
+  margin-top: 1rem; /* Space above content */
+}
+
+/* Loading spinner container */
+.loading-container {
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  min-height: 300px; /* Minimum height for visual space */
+  color: white; /* White text color */
+}
+
+/* Spinning loader animation */
+.spinner {
+  width: 50px; /* Width of spinner */
+  height: 50px; /* Height of spinner */
+  border: 5px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border */
+  border-radius: 50%; /* Circle shape */
+  border-top-color: white; /* Solid white top border creates spinner effect */
+  animation: spin 1s ease-in-out infinite; /* Continuous spinning animation */
+  margin-bottom: 1rem; /* Space below spinner */
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg); /* Rotate a full 360 degrees */
+  }
+}
+
+/* Error message container */
+.error-container {
+  background-color: rgba(
+    239,
+    68,
+    68,
+    0.2
+  ); /* Semi-transparent red background */
+  border: 2px solid rgba(239, 68, 68, 0.5); /* More visible red border */
+  border-radius: 1rem; /* Rounded corners */
+  padding: 2rem; /* Space inside container */
+  text-align: center; /* Center text */
+  color: white; /* White text color */
+  margin: 2rem 0; /* Space above and below */
+}
+
+/* Error message text */
+.error-container p {
+  margin-bottom: 1.5rem; /* Space below text */
+  font-size: 1.1rem; /* Slightly larger font size */
+}
+
+/* Retry button for errors */
+.retry-btn {
+  background-color: white; /* White background */
+  color: #4f46e5; /* Purple text color */
+  border: none; /* No border */
+  padding: 0.75rem 1.5rem; /* Space inside button */
+  border-radius: 9999px; /* Fully rounded corners (pill shape) */
+  font-weight: 600; /* Semi-bold text */
+  cursor: pointer; /* Hand cursor on hover */
+  transition: all 0.2s ease; /* Smooth transitions for hover effects */
+}
+
+/* Hover effect for retry button */
+.retry-btn:hover {
+  background-color: #4f46e5; /* Purple background on hover */
+  color: white; /* White text on hover */
+  transform: scale(1.05); /* Slightly grow button on hover */
+}
+
+/* Leaderboard toggle button */
+.leaderboard-toggle-btn {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.15
+  ); /* Semi-transparent white background */
+  color: white; /* White text color */
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border */
+  padding: 0.75rem 1.5rem; /* Space inside button */
+  border-radius: 9999px; /* Fully rounded corners (pill shape) */
+  font-weight: 600; /* Semi-bold text */
+  cursor: pointer; /* Hand cursor on hover */
+  transition: all 0.2s ease; /* Smooth transitions for hover effects */
+  margin: 2rem auto; /* Space above and below, centered horizontally */
+  display: block; /* Block level element */
+  width: fit-content; /* Only as wide as needed for content */
+}
+
+/* Hover effect for leaderboard toggle button */
+.leaderboard-toggle-btn:hover {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.25
+  ); /* Slightly more visible background on hover */
+  border-color: white; /* White border on hover */
+}
+
+/* No questions error state */
+.no-questions {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Semi-transparent white background */
+  border-radius: 1rem; /* Rounded corners */
+  padding: 2rem; /* Space inside container */
+  text-align: center; /* Center text */
+  color: white; /* White text color */
+  margin: 2rem 0; /* Space above and below */
+}
+
+/* No questions error message */
+.no-questions p {
+  margin-bottom: 1.5rem; /* Space below text */
+  font-size: 1.1rem; /* Slightly larger font size */
+}
