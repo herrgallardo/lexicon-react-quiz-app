@@ -1,0 +1,23 @@
+/* ------------------------------------
+   Meta and Stats (QuizMeta)
+------------------------------------ */
+.quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    max-width: 500px;
+    width: 100%;
+    margin-inline: auto;
+}
+
+.quiz-meta span {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
