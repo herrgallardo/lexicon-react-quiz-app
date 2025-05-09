@@ -29,6 +29,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 /**
@@ -97,5 +98,25 @@ export const getTopScores = async () => {
   } catch (error) {
     console.error('❌ Error fetching top scores:', error);
     return [];
+  }
+};
+
+/**
+ * Resets (i.e. deletes) all quiz scores in Firebase from DevMenu.
+ */
+export const deleteAllScores = async () => {
+  try {
+    const scoresRef = collection(db, 'scores');
+    const snapshot = await getDocs(scoresRef);
+
+    const deletePromises = snapshot.docs.map((docSnap) =>
+      deleteDoc(doc(db, 'scores', docSnap.id))
+    );
+
+    await Promise.all(deletePromises);
+    alert('✅ All scores have been reset.');
+  } catch (error) {
+    console.error('❌ Error deleting scores:', error);
+    alert('❌ Failed to reset scores. See console for details.');
   }
 };

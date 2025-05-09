@@ -12,6 +12,7 @@ import './App.css';
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import DevMenu from './components/DevMenu';
 
 // Pages
 import Quiz from './pages/Quiz';
@@ -29,6 +30,7 @@ function App() {
             <Route path="/auth" element={<Auth />} />
           </Routes>
         </div>
+        <DevMenu />
         <Footer /> {/* Global footer */}
       </div>
     </Router>
