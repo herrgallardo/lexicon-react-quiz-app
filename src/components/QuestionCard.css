@@ -1,0 +1,98 @@
+/* 
+ * Styles for the Question Card component
+ * This file contains all styles for displaying quiz questions and answers
+ */
+
+/* Main container for the entire question card */
+.question-card {
+  max-width: 500px; /* Limit maximum width */
+  width: 100%; /* Take full available width up to max-width */
+  margin: 0 auto; /* Center horizontally */
+  position: relative; /* Create positioning context for absolute children */
+}
+
+/* Style for the question text */
+.quiz-question {
+  font-size: 1.75rem; /* Large font size for questions */
+  font-weight: 700; /* Bold text */
+  margin-bottom: 2rem; /* Space below question */
+  color: white; /* White text color */
+  text-align: center; /* Center-align text */
+}
+
+/* Container for the answer buttons */
+.answers {
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 1rem; /* Space between buttons */
+  width: 100%; /* Take full width of container */
+  margin-top: 2rem; /* Space above answer buttons */
+}
+
+/* Base style for answer buttons */
+.answer-button {
+  width: 100%; /* Take full width of container */
+  padding: 1rem; /* Space inside buttons */
+  font-size: 1rem; /* Standard font size */
+  background-color: white; /* White background */
+  color: #4f46e5; /* Purple text color */
+  border: 2px solid transparent; /* Transparent border */
+  border-radius: 9999px; /* Fully rounded corners (pill shape) */
+  font-weight: 600; /* Semi-bold text */
+  cursor: pointer; /* Hand cursor on hover */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+  transition: all 0.2s ease-in-out; /* Smooth transitions for hover/state changes */
+}
+
+/* Hover effect for answer buttons (not when disabled) */
+.answer-button:hover:not(:disabled) {
+  background-color: #4e54c8; /* Purple background on hover */
+  color: white; /* White text on hover */
+  transform: scale(1.03); /* Slightly grow button on hover */
+}
+
+/* Style for disabled buttons */
+.answer-button:disabled {
+  cursor: default; /* Default cursor when disabled */
+}
+
+/* Style for the correct answer button */
+.answer-button.correct {
+  background-color: #10b981; /* Green background */
+  color: white; /* White text */
+  border-color: #059669; /* Darker green border */
+  font-weight: 700; /* Bold text */
+  transform: scale(1.05); /* Slightly enlarged */
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5); /* Green glow effect */
+}
+
+/* Style for incorrect answer button */
+.answer-button.incorrect {
+  background-color: #ef4444; /* Red background */
+  color: white; /* White text */
+  border-color: #dc2626; /* Darker red border */
+}
+
+/* Style for non-selected answers during feedback */
+.answer-button.faded {
+  opacity: 0.7; /* Partially transparent */
+}
+
+/* Container for the feedback text */
+.feedback-text {
+  text-align: center; /* Center-align text */
+  margin-top: 1.5rem; /* Space above feedback text */
+  font-size: 1.5rem; /* Large font size */
+  font-weight: 700; /* Bold text */
+  padding: 0.75rem; /* Space inside container */
+}
+
+/* Style for correct feedback text */
+.correct-feedback {
+  color: #10b981; /* Green text color */
+}
+
+/* Style for incorrect feedback text */
+.incorrect-feedback {
+  color: #ef4444; /* Red text color */
+}

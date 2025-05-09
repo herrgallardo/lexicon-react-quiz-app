@@ -1,0 +1,94 @@
+/* 
+ * Styles for the Quiz Setup component
+ * This file contains all styles for the quiz configuration screen
+ */
+
+/* Main container for the entire setup form */
+.quiz-setup {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Semi-transparent white background */
+  border-radius: 1rem; /* Rounded corners */
+  padding: 2rem; /* Space inside the container */
+  margin-bottom: 2rem; /* Space below the container */
+  max-width: 500px; /* Limit maximum width */
+  width: 100%; /* Take full available width up to max-width */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Main heading for the setup screen */
+.quiz-setup h2 {
+  margin-top: 0; /* Remove default top margin */
+  color: white; /* White text color */
+  font-size: 1.75rem; /* Large font size */
+  margin-bottom: 1.5rem; /* Space below heading */
+  text-align: center; /* Center the text */
+}
+
+/* Container for each form field group (label + input) */
+.form-group {
+  margin-bottom: 1.25rem; /* Space between form fields */
+}
+
+/* Style for form field labels */
+.form-group label {
+  display: block; /* Make label take full width */
+  margin-bottom: 0.5rem; /* Space between label and input */
+  color: white; /* White text color */
+  font-weight: 500; /* Medium font weight */
+  font-size: 1rem; /* Standard font size */
+}
+
+/* Style for dropdown selects */
+.form-group select {
+  width: 100%; /* Take full width of container */
+  padding: 0.75rem 1rem; /* Space inside the select box */
+  border-radius: 0.5rem; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border */
+  background-color: rgba(255, 255, 255, 0.9); /* Almost white background */
+  font-size: 1rem; /* Standard font size */
+  color: #333; /* Dark gray text */
+  appearance: none; /* Remove default browser styling */
+
+  /* Custom dropdown arrow (SVG triangle) */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat; /* Don't repeat the arrow image */
+  background-position: right 0.7rem top 50%; /* Position arrow on the right */
+  background-size: 0.65rem auto; /* Size of the arrow */
+}
+
+/* Style for disabled dropdown selects (while loading) */
+.form-group select:disabled {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* Lighter background when disabled */
+  cursor: not-allowed; /* Show "not-allowed" cursor on hover */
+}
+
+/* Style for the Start Quiz button */
+.start-quiz-btn {
+  width: 100%; /* Take full width of container */
+  padding: 1rem; /* Space inside the button */
+  background-color: white; /* White background */
+  color: #4f46e5; /* Purple text color */
+  border: none; /* No border */
+  border-radius: 9999px; /* Fully rounded corners (pill shape) */
+  font-weight: 600; /* Semi-bold text */
+  font-size: 1rem; /* Standard font size */
+  cursor: pointer; /* Hand cursor on hover */
+  transition: all 0.2s ease-in-out; /* Smooth transitions for hover effects */
+  margin-top: 1rem; /* Space above the button */
+}
+
+/* Hover effect for the Start Quiz button */
+.start-quiz-btn:hover {
+  background-color: #4e54c8; /* Purple background on hover */
+  color: white; /* White text on hover */
+  transform: scale(1.02); /* Slightly grow button on hover */
+}

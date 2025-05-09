@@ -1,0 +1,111 @@
+/* 
+ * Styles for the Quiz Progress component
+ * This file contains all styles for displaying the quiz progress and stats
+ */
+
+/* Main container for the entire progress section */
+.quiz-progress {
+  max-width: 500px; /* Limit maximum width */
+  width: 100%; /* Take full available width up to max-width */
+  margin: 0 auto 2rem auto; /* Center horizontally and add space below */
+}
+
+/* Container for question count and score statistics */
+.quiz-stats {
+  display: flex; /* Use flexbox layout */
+  justify-content: space-between; /* Push items to opposite ends */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 1rem; /* Space below stats section */
+}
+
+/* Shared styles for question count and score display boxes */
+.question-count,
+.score-display {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Semi-transparent white background */
+  padding: 0.75rem 1.25rem; /* Space inside containers */
+  border-radius: 999px; /* Fully rounded corners (pill shape) */
+  color: white; /* White text color */
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack label and value vertically */
+  align-items: center; /* Center items horizontally */
+  min-width: 120px; /* Minimum width for consistent sizing */
+  backdrop-filter: blur(8px); /* Blur effect for modern browsers */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+/* Style for the label text in stat boxes */
+.question-count span,
+.score-display span {
+  font-size: 0.75rem; /* Smaller font size for labels */
+  opacity: 0.8; /* Slightly transparent for hierarchy */
+  margin-bottom: 0.25rem; /* Space below labels */
+}
+
+/* Style for the value text in stat boxes */
+.question-count strong,
+.score-display strong {
+  font-size: 1.25rem; /* Larger font size for values */
+  font-weight: 700; /* Bold text */
+}
+
+/* Container for the progress bar */
+.progress-bar-container {
+  height: 12px; /* Height of the progress bar */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.15
+  ); /* Semi-transparent white background */
+  border-radius: 999px; /* Fully rounded corners */
+  overflow: hidden; /* Hide overflow for child elements */
+  margin-top: 0.5rem; /* Space above progress bar */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+  position: relative; /* Create positioning context for children */
+}
+
+/* The filled portion of the progress bar */
+.progress-bar-fill {
+  height: 100%; /* Take full height of container */
+  /* Gradient background from darker blue to lighter blue */
+  background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+  border-radius: 999px; /* Fully rounded corners */
+  transition: width 0.5s ease-in-out; /* Smooth animation when width changes */
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.6); /* Glow effect */
+  position: relative; /* For positioning ::after element */
+}
+
+/* Creates a moving shine effect across the progress bar */
+.progress-bar-fill::after {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position relative to parent */
+  top: 0; /* Align to top */
+  left: 0; /* Align to left */
+  width: 100%; /* Take full width */
+  height: 100%; /* Take full height */
+  /* Horizontal gradient from transparent to white to transparent */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    /* Start transparent */ rgba(255, 255, 255, 0.3) 50%,
+    /* Middle is semi-transparent white */ rgba(255, 255, 255, 0) 100%
+      /* End transparent */
+  );
+  animation: shine 2s infinite; /* Apply the shine animation repeatedly */
+}
+
+/* Keyframes for the shine animation */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%); /* Start to the left of the bar */
+  }
+  100% {
+    transform: translateX(100%); /* End to the right of the bar */
+  }
+}
