@@ -1,0 +1,113 @@
+/* Header.css - Styling for the quiz app header */
+
+/* Main header container */
+.header {
+    background-color: #f4f4f4; /* Light gray background */
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow effect */
+    position: sticky; /* Keeps the header fixed at the top while scrolling */
+    top: 0; /* Positions the header at the very top */
+    z-index: 1000; /* Ensures the header remains above other elements */
+  }
+  
+  /* Content inside the header (logo, navigation, hamburger menu) */
+  .header-content {
+    display: flex; /* Makes elements align in a row */
+    justify-content: space-between; /* Aligns elements to opposite ends */
+    align-items: center; /* Centers items vertically */
+    padding: 0.5rem 1.5rem; /* Adds spacing inside the header */
+  }
+  
+  /* Logo styling */
+  .logo a {
+    text-decoration: none; /* Removes underline from links */
+    color: #333; /* Dark gray color */
+  }
+  
+  .logo h1 {
+    font-size: 1.5rem; /* Sets font size */
+    font-weight: bold; /* Makes text bold */
+  }
+  
+  .logo img {
+    height: 100px; /* Sets image height */
+    width: auto; /* Adjusts width proportionally */
+  }
+  
+  
+  /* Navigation menu - Default (desktop version) */
+  .nav-list {
+    display: flex; /* Horizontal layout for navigation */
+    list-style: none; /* Removes default list styling */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-left: 1.5rem; /* Adds space between navigation links */
+  }
+  
+  .nav-link {
+    text-decoration: none; /* Removes underline */
+    color: #333; /* Dark gray */
+    font-weight: 500; /* Slightly bold */
+    transition: color 0.3s; /* Smooth color change effect */
+  }
+  
+  .nav-link:hover {
+    color: #007bff; /* Changes color to blue on hover */
+  }
+  
+  /* Hamburger menu for mobile */
+  /* Hidden by default for larger screens */
+  .hamburger {
+    display: none; /* Hidden on desktop */
+    flex-direction: column; /* Stacks bars vertically */
+    cursor: pointer; /* Indicates clickable action */
+  }
+  
+  /* The three bars inside the hamburger menu */
+  .bar {
+    width: 25px; /* Width of each bar */
+    height: 3px; /* Thickness */
+    background-color: #333; /* Dark gray */
+    margin: 4px 0; /* Spacing between bars */
+    transition: 0.4s; /* Smooth transition effect */
+  }
+  
+  /* Responsive styles for smaller screens */
+  @media (max-width: 768px) {
+    /* Adjust header layout for mobile */
+    .header-content {
+      flex-direction: row; /* Keeps elements aligned properly */
+      justify-content: space-between; /* Prevents overlap */
+    }
+  
+    /* Show hamburger menu on mobile */
+    .hamburger {
+      display: flex;
+    }
+  
+    /* Hide navigation menu by default */
+    .nav-list {
+      display: none; /* Hidden initially */
+      flex-direction: column; /* Stacked layout */
+      width: 100%;
+      text-align: center; /* Centered text */
+      background-color: #f4f4f4; /* Background same as header */
+      position: absolute; /* Positions menu below header */
+      top: 60px; /* Aligns under the header */
+      left: 0;
+      padding: 1rem 0;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Adds a dropdown shadow */
+    }
+  
+    /* Display menu when active */
+    .nav-list.active {
+      display: flex;
+    }
+  
+    /* Mobile-friendly spacing for navigation items */
+    .nav-item {
+      margin: 1rem 0;
+    }
+  }
