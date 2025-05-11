@@ -13,10 +13,13 @@
   ); /* Semi-transparent white background */
   border-radius: 1rem; /* Rounded corners */
   padding: 2rem; /* Space inside the container */
-  margin-bottom: 2rem; /* Space below the container */
+  margin: 0 auto 2rem auto; /* Center horizontally and add space below */
   max-width: 500px; /* Limit maximum width */
   width: 100%; /* Take full available width up to max-width */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Main heading for the setup screen */
@@ -47,7 +50,7 @@
   width: 100%; /* Take full width of container */
   padding: 0.75rem 1rem; /* Space inside the select box */
   border-radius: 0.5rem; /* Rounded corners */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border */
+  border: none;
   background-color: rgba(255, 255, 255, 0.9); /* Almost white background */
   font-size: 1rem; /* Standard font size */
   color: #333; /* Dark gray text */
@@ -91,4 +94,41 @@
   background-color: #4e54c8; /* Purple background on hover */
   color: white; /* White text on hover */
   transform: scale(1.02); /* Slightly grow button on hover */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 480px) {
+  .quiz-setup {
+    padding: 1.5rem; /* Reduced padding for smaller screens */
+    border-radius: 0.875rem; /* Slightly less rounded corners */
+    margin: 0 0.75rem 1.5rem 0.75rem; /* Add horizontal margins for "air" */
+    width: calc(100% - 1.5rem); /* Account for margins */
+    max-width: calc(100% - 1.5rem); /* Adjusted max-width for mobile */
+  }
+
+  .quiz-setup h2 {
+    font-size: 1.5rem; /* Smaller heading on mobile */
+    margin-bottom: 1.25rem; /* Less space below heading */
+  }
+
+  .form-group {
+    margin-bottom: 1rem; /* Less space between form fields */
+  }
+
+  .form-group label {
+    font-size: 0.9rem; /* Smaller label text */
+    margin-bottom: 0.375rem; /* Less space below label */
+  }
+
+  .form-group select {
+    padding: 0.625rem 0.875rem; /* Smaller padding */
+    font-size: 0.95rem; /* Slightly smaller text */
+    border-radius: 0.375rem; /* Less rounded corners */
+  }
+
+  .start-quiz-btn {
+    padding: 0.875rem; /* Smaller padding */
+    font-size: 0.95rem; /* Slightly smaller text */
+    margin-top: 0.75rem; /* Less space above button */
+  }
 }

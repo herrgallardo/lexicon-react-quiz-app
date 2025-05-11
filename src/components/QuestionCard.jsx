@@ -1,6 +1,6 @@
 // This component displays a single quiz question with multiple answer choices
 // It handles user selections, displays feedback, and communicates with parent components
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './QuestionCard.css';
 
 const QuestionCard = ({ question, onAnswer }) => {
@@ -9,6 +9,9 @@ const QuestionCard = ({ question, onAnswer }) => {
 
   // State to track whether we should show answer feedback (correct/incorrect)
   const [showFeedback, setShowFeedback] = useState(false);
+
+  // Store timeout ID in a ref so we can clear it if needed
+  const timeoutRef = useRef(null);
 
   // Handler function that runs when a user clicks on an answer
   const handleAnswerClick = (answer) => {
@@ -21,74 +24,95 @@ const QuestionCard = ({ question, onAnswer }) => {
     // Show feedback about whether the answer was correct
     setShowFeedback(true);
 
-    // Wait 3 seconds before moving to the next question to give time to see feedback
-    // This uses setTimeout to create a delay
-    setTimeout(() => {
-      // Call the parent component's onAnswer function with the selected answer
-      // This allows the parent to update score, move to next question, etc.
-      onAnswer(answer);
-
-      // Reset our component state for the next question
-      setSelectedAnswer(null);
-      setShowFeedback(false);
+    // Set a timeout to automatically move to the next question after 3 seconds
+    timeoutRef.current = setTimeout(() => {
+      handleNextQuestion();
     }, 3000); // 3000 milliseconds = 3 seconds
+  };
+
+  // Handler for the next question button
+  const handleNextQuestion = () => {
+    // Clear any existing timeout to prevent double-moves
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    // Call the parent component's onAnswer function with the selected answer
+    // This allows the parent to update score, move to next question, etc.
+    onAnswer(selectedAnswer);
+
+    // Reset our component state for the next question
+    setSelectedAnswer(null);
+    setShowFeedback(false);
   };
 
   // Determine if the selected answer is correct by comparing with question's correct_answer
   const isCorrect = selectedAnswer === question.correct_answer;
 
+  // Letters for answer options
+  const answerLetters = ['A', 'B', 'C', 'D'];
+
   return (
     <div className="question-card">
-      {/* Display the question text - using dangerouslySetInnerHTML because the API 
-          sometimes returns HTML entities that need to be rendered properly */}
-      <h2
-        className="quiz-question"
-        dangerouslySetInnerHTML={{ __html: question.question }}
-      />
+      {/* Main content including question and answers */}
+      <div className="question-content">
+        <h2
+          className="quiz-question"
+          dangerouslySetInnerHTML={{ __html: question.question }}
+        />
 
-      {/* Container for all answer buttons */}
-      <div className="answers">
-        {/* Map over each possible answer to create a button */}
-        {question.allAnswers.map((answer, index) => {
-          // Define the CSS class for the button based on state
-          let buttonClass = 'answer-button';
-
-          // If showing feedback, add appropriate classes based on correctness
-          if (showFeedback) {
-            if (answer === question.correct_answer) {
-              // Always highlight the correct answer in green
-              buttonClass += ' correct';
-            } else if (selectedAnswer === answer) {
-              // If this is the user's selection and it's wrong, highlight in red
-              buttonClass += ' incorrect';
-            } else {
-              // Fade out other answer options
-              buttonClass += ' faded';
+        <div className="answers">
+          {question.allAnswers.map((answer, index) => {
+            let buttonClass = 'answer-button';
+            if (showFeedback) {
+              if (answer === question.correct_answer) {
+                buttonClass += ' correct';
+              } else if (selectedAnswer === answer) {
+                buttonClass += ' incorrect';
+              } else {
+                buttonClass += ' faded';
+              }
             }
-          }
 
-          return (
-            <button
-              key={index} // React needs unique keys when mapping over items
-              className={buttonClass}
-              onClick={() => handleAnswerClick(answer)} // Call handler with this answer
-              disabled={showFeedback} // Disable button while showing feedback
-              dangerouslySetInnerHTML={{ __html: answer }} // Render HTML entities in answer
-            />
-          );
-        })}
+            return (
+              <button
+                key={index}
+                className={buttonClass}
+                onClick={() => handleAnswerClick(answer)}
+                disabled={showFeedback}
+              >
+                <span className="answer-letter">{answerLetters[index]}</span>
+                <span
+                  className="answer-text"
+                  dangerouslySetInnerHTML={{ __html: answer }}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Show text feedback when an answer is selected */}
+      {/* Fixed spacing area that always exists */}
+      <div className="feedback-spacing"></div>
+
+      {/* Feedback container only appears after answering */}
       {showFeedback && (
-        <div className="feedback-text">
-          {isCorrect ? (
-            // If correct, show green checkmark and "Correct!" message
-            <span className="correct-feedback">✓ Correct!</span>
-          ) : (
-            // If incorrect, show red X and "Incorrect" message
-            <span className="incorrect-feedback">✗ Incorrect</span>
-          )}
+        <div className="feedback-container">
+          <div
+            className={`feedback-text ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}
+          >
+            {isCorrect ? <span>✓ Correct!</span> : <span>✗ Incorrect</span>}
+          </div>
+
+          <button
+            className="next-question-btn"
+            onClick={handleNextQuestion}
+            aria-label="Next Question"
+          >
+            <span className="next-text">Next</span>
+            <span className="arrow-icon">→</span>
+          </button>
         </div>
       )}
     </div>

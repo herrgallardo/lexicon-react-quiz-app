@@ -10,6 +10,7 @@ import QuestionCard from '../components/QuestionCard';
 import QuizProgress from '../components/QuizProgress';
 import QuizResult from '../components/QuizResult';
 import Leaderboard from '../components/Leaderboard';
+import ConfirmationModal from '../components/ConfirmationModal';
 import { useQuiz } from '../hooks/useTriviaHooks';
 import { AuthContext } from '../context/AuthContext';
 import { saveScore, getTopScores } from '../services/firestoreService';
@@ -50,6 +51,9 @@ const Quiz = () => {
 
   // State to toggle leaderboard visibility
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  // State to control confirmation modal visibility
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   // Hook for programmatic navigation between routes
   const navigate = useNavigate();
@@ -202,6 +206,22 @@ const Quiz = () => {
     resetQuiz();
   };
 
+  // Show the confirmation modal when user clicks Cancel Quiz
+  const handleCancelQuizClick = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  // Handler for when user confirms they want to cancel the quiz
+  const handleConfirmCancelQuiz = () => {
+    // Clear existing quiz state in localStorage
+    localStorage.removeItem(QUIZ_STATE_KEY);
+
+    // Go back to the setup screen
+    setQuizStarted(false);
+    // Reset the quiz state
+    resetQuiz();
+  };
+
   // Handler to toggle the leaderboard visibility
   const toggleLeaderboard = () => {
     setShowLeaderboard(!showLeaderboard);
@@ -290,6 +310,14 @@ const Quiz = () => {
                 question={currentQuestion}
                 onAnswer={handleAnswer}
               />
+
+              {/* Cancel quiz button - now placed within the quiz flow */}
+              <button
+                className="cancel-quiz-btn"
+                onClick={handleCancelQuizClick}
+              >
+                Cancel Quiz
+              </button>
             </>
           ) : (
             // FALLBACK - NO QUESTIONS
@@ -303,6 +331,17 @@ const Quiz = () => {
           )}
         </div>
       </div>
+
+      {/* Confirmation Modal for canceling quiz */}
+      <ConfirmationModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleConfirmCancelQuiz}
+        title="Cancel Quiz"
+        message="Are you sure you want to cancel this quiz? Your progress will be lost."
+        confirmText="Yes, Cancel Quiz"
+        cancelText="No, Continue Quiz"
+      />
     </QuizLayout>
   );
 };

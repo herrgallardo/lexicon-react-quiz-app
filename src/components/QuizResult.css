@@ -1,5 +1,5 @@
 /* 
- * Styles for the Quiz Result component
+ * Enhanced styles for the Quiz Result component
  * This file contains all styles for displaying the final quiz results
  */
 
@@ -10,17 +10,39 @@
     255,
     255,
     0.15
-  ); /* Semi-transparent white background */
+  ); /* Restored original transparency */
   border-radius: 1.5rem; /* Rounded corners */
-  padding: 2.5rem 2rem; /* Space inside container */
+  padding: 2.5rem 2rem; /* Space inside */
   text-align: center; /* Center-align all content */
   color: white; /* White text color */
   max-width: 500px; /* Limit maximum width */
-  width: 100%; /* Take full available width up to max-width */
-  margin: 0 auto; /* Center horizontally */
+  width: calc(100% - 2rem); /* Account for margins */
+  margin: 0 1rem; /* Added horizontal margins */
   backdrop-filter: blur(10px); /* Blur effect for modern browsers */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* Shadow for depth */
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.2); /* Add depth with layered shadows */
   animation: fadeIn 0.5s ease-out; /* Fade-in animation when displayed */
+  box-sizing: border-box; /* Include padding in width calculation */
+  position: relative; /* For positioning decorative elements */
+  overflow: hidden; /* Contain overflows */
+}
+
+/* Add decorative corner accent */
+.quiz-result:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(
+    circle at top right,
+    rgba(255, 255, 255, 0.15),
+    transparent 70%
+  );
+  opacity: 0.8;
+  z-index: 0;
 }
 
 /* Animation definition for fading in and moving up */
@@ -40,7 +62,11 @@
   font-size: 3.5rem; /* Very large font size */
   margin-bottom: 1rem; /* Space below icon */
   color: #ffd700; /* Gold color */
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Glow effect */
+  text-shadow:
+    0 0 15px rgba(255, 215, 0, 0.6),
+    0 0 30px rgba(255, 215, 0, 0.3); /* Enhanced glow effect */
+  position: relative;
+  z-index: 1;
 }
 
 /* Style for the performance text heading */
@@ -48,32 +74,50 @@
   font-size: 2.5rem; /* Very large font size */
   margin-bottom: 1.5rem; /* Space below title */
   font-weight: 800; /* Extra bold text */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Semi-transparent white background */
+  padding: 0.5rem 1rem; /* Space around title for contrast */
+  border-radius: 0.5rem; /* Rounded corners for background */
 }
 
 /* Different colors for different performance levels */
 .result-title.outstanding {
   color: #10b981; /* Green color for top scores */
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); /* Green glow */
+  text-shadow:
+    0 0 10px rgba(16, 185, 129, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
 }
 
 .result-title.great {
   color: #3b82f6; /* Blue color for good scores */
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Blue glow */
+  text-shadow:
+    0 0 10px rgba(59, 130, 246, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
 }
 
 .result-title.good {
   color: #f59e0b; /* Orange color for average scores */
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); /* Orange glow */
+  text-shadow:
+    0 0 10px rgba(245, 158, 11, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
 }
 
 .result-title.practice {
   color: #ef4444; /* Red color for low scores */
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); /* Red glow */
+  text-shadow:
+    0 0 10px rgba(239, 68, 68, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
 }
 
 /* Container for score information */
 .score-summary {
   margin-bottom: 2rem; /* Space below score summary */
+  position: relative;
+  z-index: 1;
 }
 
 /* Container for percentage display */
@@ -89,6 +133,7 @@
   font-size: 3.5rem; /* Very large font size */
   font-weight: 700; /* Bold text */
   line-height: 1; /* Remove extra line height */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Shadow for depth */
 }
 
 /* Style for the "Score" label below percentage */
@@ -103,6 +148,7 @@
   font-size: 1.25rem; /* Larger font size */
   line-height: 1.6; /* Increased line height for readability */
   opacity: 0.9; /* Slightly transparent */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); /* Text shadow for better readability */
 }
 
 /* Container for action buttons */
@@ -111,6 +157,8 @@
   gap: 1rem; /* Space between buttons */
   margin-top: 2rem; /* Space above buttons */
   justify-content: center; /* Center buttons horizontally */
+  position: relative;
+  z-index: 1;
 }
 
 /* Shared styles for both action buttons */
@@ -123,7 +171,9 @@
   border-radius: 9999px; /* Fully rounded corners (pill shape) */
   cursor: pointer; /* Hand cursor on hover */
   transition: all 0.2s ease-in-out; /* Smooth transitions for hover effects */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.15); /* Layered shadows for depth */
   display: flex; /* Use flexbox for icon and text */
   align-items: center; /* Center items vertically */
   gap: 0.5rem; /* Space between icon and text */
@@ -131,22 +181,24 @@
 
 /* Style for the "Play Again" button */
 .play-again-btn {
-  background-color: white; /* White background */
-  color: #4f46e5; /* Purple text color */
+  background-color: white; /* White background - original */
+  color: #4f46e5; /* Purple text color - original */
 }
 
 /* Style for the "New Quiz" button */
 .new-quiz-btn {
-  background-color: transparent; /* Transparent background */
-  color: white; /* White text color */
-  border: 2px solid rgba(255, 255, 255, 0.6); /* Semi-transparent white border */
+  background-color: transparent; /* Transparent background - original */
+  color: white; /* White text color - original */
 }
 
 /* Hover effect for "Play Again" button */
 .play-again-btn:hover {
   background-color: #4f46e5; /* Purple background on hover */
   color: white; /* White text on hover */
-  transform: scale(1.05); /* Slightly grow button on hover */
+  transform: scale(1.05); /* Move up on hover */
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
 }
 
 /* Hover effect for "New Quiz" button */
@@ -155,8 +207,55 @@
     255,
     255,
     255,
-    0.1
-  ); /* Semi-transparent white background on hover */
-  border-color: white; /* White border on hover */
-  transform: scale(1.05); /* Slightly grow button on hover */
+    0.25
+  ); /* More visible background on hover */
+  transform: scale(1.05); /* Move up on hover */
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.25),
+    0 6px 12px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 480px) {
+  .quiz-result {
+    padding: 2rem 1.5rem; /* Reduced padding */
+    border-radius: 1.25rem; /* Slightly less rounded corners */
+    margin: 0 0.75rem; /* Smaller margins */
+    width: calc(100% - 1.5rem); /* Account for margins */
+  }
+
+  .result-trophy {
+    font-size: 3rem; /* Smaller trophy icon */
+  }
+
+  .result-title {
+    font-size: 2rem; /* Smaller heading */
+    margin-bottom: 1.25rem; /* Less space below */
+  }
+
+  .percent-value {
+    font-size: 3rem; /* Smaller percentage */
+  }
+
+  .percent-label {
+    font-size: 0.9rem; /* Smaller label */
+  }
+
+  .score-detail {
+    font-size: 1.1rem; /* Smaller text */
+    padding: 0 0.5rem; /* Add horizontal padding */
+  }
+
+  .action-buttons {
+    flex-direction: column; /* Stack buttons on mobile */
+    gap: 0.75rem; /* Less space between buttons */
+    margin-top: 1.5rem; /* Less space above buttons */
+  }
+
+  .play-again-btn,
+  .new-quiz-btn {
+    width: 100%; /* Full width buttons */
+    justify-content: center; /* Center content */
+    padding: 0.75rem 1.25rem; /* Smaller padding */
+  }
 }

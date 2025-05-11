@@ -1,0 +1,178 @@
+/* src/components/ConfirmationModal.css
+ * -----------------------------------------------------
+ * Styles for the confirmation modal component
+ * Used for critical actions requiring user confirmation
+ * Includes overlay backdrop, animated modal container,
+ * and styled action buttons
+ * -----------------------------------------------------
+ */
+
+/* ------------------------------------
+   Modal Overlay (Backdrop)
+------------------------------------ */
+.modal-overlay {
+  position: fixed; /* Fixed position covers entire viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.65
+  ); /* Slightly darker background for better focus */
+  display: flex; /* Center the modal container */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 9999; /* Extremely high z-index to ensure it's above everything */
+  animation: fadeIn 0.2s ease-out; /* Fade in animation */
+  backdrop-filter: blur(8px); /* Stronger blur effect for background */
+}
+
+/* Animation for fade-in effect when modal appears */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  } /* Start completely transparent */
+  to {
+    opacity: 1;
+  } /* End fully visible */
+}
+
+/* ------------------------------------
+   Modal Container
+------------------------------------ */
+.modal-container {
+  /* Background gradient matching quiz theme */
+  background: linear-gradient(135deg, #3b3e88, #303374);
+  border-radius: 1rem; /* Rounded corners */
+  padding: 0; /* No padding on container, only on content */
+  width: 90%; /* Take 90% of screen width on small devices */
+  max-width: 450px; /* But limit maximum width */
+  max-height: 90vh; /* Prevent from being taller than viewport, allowing for scrolling if needed */
+  overflow-y: auto; /* Enable scrolling if content is too tall */
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1); /* Enhanced shadow for depth */
+  animation: slideUp 0.3s ease-out; /* Slide up animation */
+  position: relative; /* Create a stacking context */
+  z-index: 100; /* Even higher than the overlay to ensure it's on top */
+}
+
+/* Animation for slide-up effect when modal appears */
+@keyframes slideUp {
+  from {
+    transform: translateY(30px); /* Start 30px below final position */
+    opacity: 0; /* Start completely transparent */
+  }
+  to {
+    transform: translateY(0); /* End at final position */
+    opacity: 1; /* End fully visible */
+  }
+}
+
+/* Make sure the modal is visible in all browsers that might not support backdrop-filter */
+@supports not (backdrop-filter: blur(8px)) {
+  .modal-overlay {
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.8
+    ); /* Darker fallback if blur not supported */
+  }
+}
+
+/* ------------------------------------
+   Modal Content
+------------------------------------ */
+.modal-content {
+  padding: 1.5rem; /* Space inside the content area */
+}
+
+/* Style for the modal title */
+.modal-title {
+  color: white; /* White text color */
+  font-size: 1.5rem; /* Large font size */
+  font-weight: 700; /* Bold font weight */
+  margin-top: 0; /* Remove default top margin */
+  margin-bottom: 1rem; /* Space below title */
+  text-align: center; /* Center align text */
+}
+
+/* Style for the modal message */
+.modal-message {
+  font-size: 1.1rem; /* Larger than standard text */
+  line-height: 1.5; /* Increased line height for readability */
+  color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  margin-bottom: 1.5rem; /* Space below message */
+  text-align: center; /* Center align text */
+}
+
+/* ------------------------------------
+   Action Buttons
+------------------------------------ */
+.modal-actions {
+  display: flex; /* Horizontal layout for buttons */
+  justify-content: center; /* Center buttons horizontally */
+  gap: 1rem; /* Space between buttons */
+  margin-top: 1.5rem; /* Space above button container */
+}
+
+/* Base style for both modal buttons */
+.modal-button {
+  padding: 0.75rem 1.5rem; /* Space inside buttons */
+  border-radius: 9999px; /* Fully rounded corners (pill shape) */
+  font-weight: 600; /* Semi-bold text */
+  font-size: 1rem; /* Standard font size */
+  cursor: pointer; /* Hand cursor on hover */
+  transition: all 0.2s ease; /* Smooth transition for hover effects */
+  min-width: 120px; /* Minimum width for buttons */
+}
+
+/* Style for the cancel button */
+.cancel-button {
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  color: white; /* White text */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+/* Hover effect for cancel button */
+.cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly more visible */
+  transform: translateY(-2px); /* Move up slightly on hover */
+}
+
+/* Style for the confirm button */
+.confirm-button {
+  background-color: #ef4444; /* Red background for destructive action */
+  color: white; /* White text */
+  border: none; /* No border */
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); /* Red shadow for emphasis */
+}
+
+/* Hover effect for confirm button */
+.confirm-button:hover {
+  background-color: #dc2626; /* Darker red on hover */
+  transform: translateY(-2px); /* Move up slightly on hover */
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4); /* Larger shadow on hover */
+}
+
+/* ------------------------------------
+   Responsive Adjustments
+------------------------------------ */
+/* For mobile devices */
+@media (max-width: 480px) {
+  .modal-container {
+    width: 95%; /* Take up more of the screen width */
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse; /* Stack buttons vertically */
+  }
+
+  .modal-button {
+    width: 100%; /* Full width buttons */
+  }
+}
