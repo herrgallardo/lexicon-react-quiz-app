@@ -1,21 +1,12 @@
-// src/services/firestoreService.js
-// ------------------------------------------------------------------
-// Firestore Service for Lexicon Quiz App
-//
-// This module handles:
-// ✅ Saving quiz scores to the "scores" collection
-// ✅ Saving user profiles to the "users" collection
-// ✅ Fetching user profiles
-// ✅ Retrieving the top 10 scores for the leaderboard
-//
-// Firestore is initialized via: src/firebase/firebaseInit.js
-//
-// Example usage:
-// await saveScore({ userId: user.uid, email: user.email, score: finalScore });
-// await saveUserProfile({ uid: user.uid, displayName: user.email.split('@')[0], email: user.email });
-// const profile = await getUserProfile(user.uid);
-// const topScores = await getTopScores();
-// ------------------------------------------------------------------
+// ---------------------------------------------------
+// firestoreService.js
+// ---------------------------------------------------
+// Summary:
+// - Manages all Firestore reads/writes for the app
+// - Handles user profile saving/loading
+// - Handles quiz score saving
+// - Fetches leaderboard (top 10 scores)
+// - Dev tool: allows deleting all scores
 
 import { db } from '../firebase/firebaseInit';
 import {
@@ -29,11 +20,12 @@ import {
   doc,
   setDoc,
   getDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 /**
- * Save a user's quiz score to Firestore.
- * Stored in "scores" collection with timestamp.
+ * Saves a quiz score to the "scores" collection.
+ * Includes user ID, email, score, and timestamp.
  */
 export const saveScore = async ({ userId, email, score }) => {
   try {
@@ -50,8 +42,8 @@ export const saveScore = async ({ userId, email, score }) => {
 };
 
 /**
- * Save a user's profile to Firestore.
- * Stored in "users" collection using UID as doc ID.
+ * Saves user profile to the "users" collection using their UID.
+ * This helps link auth users to display names or additional info.
  */
 export const saveUserProfile = async ({ uid, displayName, email }) => {
   try {
@@ -66,8 +58,8 @@ export const saveUserProfile = async ({ uid, displayName, email }) => {
 };
 
 /**
- * Fetch a user's profile from Firestore.
- * Returns null if not found.
+ * Loads a user profile from Firestore by UID.
+ * Returns null if the profile doesn't exist.
  */
 export const getUserProfile = async (uid) => {
   try {
@@ -81,8 +73,8 @@ export const getUserProfile = async (uid) => {
 };
 
 /**
- * Fetch the top 10 highest scores.
- * Ordered descending by score.
+ * Gets the top 10 scores from the "scores" collection.
+ * Useful for showing a leaderboard.
  */
 export const getTopScores = async () => {
   try {
@@ -90,6 +82,7 @@ export const getTopScores = async () => {
     const topQuery = query(scoresRef, orderBy('score', 'desc'), limit(10));
     const snapshot = await getDocs(topQuery);
 
+    // Map Firestore docs to plain JS objects
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -97,5 +90,27 @@ export const getTopScores = async () => {
   } catch (error) {
     console.error('❌ Error fetching top scores:', error);
     return [];
+  }
+};
+
+/**
+ * Deletes all score entries from the "scores" collection.
+ * Useful for dev testing or resetting state.
+ */
+export const deleteAllScores = async () => {
+  try {
+    const scoresRef = collection(db, 'scores');
+    const snapshot = await getDocs(scoresRef);
+
+    // Delete each score document one by one
+    const deletePromises = snapshot.docs.map((docSnap) =>
+      deleteDoc(doc(db, 'scores', docSnap.id))
+    );
+
+    await Promise.all(deletePromises);
+    alert('✅ All scores have been reset.');
+  } catch (error) {
+    console.error('❌ Error deleting scores:', error);
+    alert('❌ Failed to reset scores. See console for details.');
   }
 };

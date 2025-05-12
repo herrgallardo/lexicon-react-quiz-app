@@ -2,22 +2,39 @@
    Meta and Stats (QuizMeta)
 ------------------------------------ */
 .quiz-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #ffffff;
-    max-width: 500px;
-    width: 100%;
-    margin-inline: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem; /* Reduced font size */
+  font-weight: 700;
+  margin-bottom: 1.25rem; /* Reduced margin */
+  color: #ffffff;
+  max-width: 500px;
+  width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .quiz-meta span {
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.9rem; /* Reduced padding */
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 0.95rem; /* Smaller font size */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 480px) {
+  .quiz-meta {
+    font-size: 0.9rem; /* Even smaller font */
+    margin-bottom: 1rem; /* Smaller margin */
+  }
+
+  .quiz-meta span {
+    padding: 0.35rem 0.7rem; /* Smaller padding */
+    font-size: 0.85rem; /* Smaller font */
+  }
 }

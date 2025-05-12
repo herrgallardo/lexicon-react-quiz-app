@@ -1,37 +1,41 @@
-// This file creates and provides a global Auth context
-// It tracks the currently authenticated Firebase user
-// and makes it accessible throughout the app
+// --------------------------------------------
+// AuthContext.jsx
+// --------------------------------------------
+// Summary:
+// - Creates a global AuthContext
+// - Tracks Firebase Auth state (login/logout)
+// - Shares the logged-in user with all app components
+// - Ensures app knows when auth state is ready
+
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/firebaseInit'; // Firebase auth instance
 import { onAuthStateChanged } from 'firebase/auth'; // Listener for auth state changes
 
-// Create the AuthContext
+// Creates a new context to share the auth state
 export const AuthContext = createContext();
 
-// AuthProvider wraps the entire app and provides the user to its children
+// This component wraps the app and provides the auth context
 export const AuthProvider = ({ children }) => {
-  // Local state to store the logged-in user
+  // Stores the currently logged-in user
   const [user, setUser] = useState(null);
 
-  // Flag to track if Firebase auth has initialized
+  // Tells the app when Firebase has finished checking auth state
   const [authInitialized, setAuthInitialized] = useState(false);
 
   useEffect(() => {
-    // Subscribe to auth state changes (login, logout, etc.)
+    // Subscribe to Firebase auth state changes
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      // Update local state when auth state changes
+      // Updates the user state when the auth state changes
       setUser(firebaseUser);
-
-      // Mark authentication as initialized once we get the first response
-      // (whether the user is logged in or not)
+      // Marks auth as ready (whether user is logged in or not)
       setAuthInitialized(true);
     });
 
-    // Clean up the listener on unmount to prevent memory leaks
+    // Cleanup function to unsubscribe from the listener on component unmount
     return () => unsubscribe();
   }, []);
 
-  // Provide both user and authInitialized values to all components within the context
+  // Makes the user and authInitialized available to all child components
   return (
     <AuthContext.Provider value={{ user, authInitialized }}>
       {children}
