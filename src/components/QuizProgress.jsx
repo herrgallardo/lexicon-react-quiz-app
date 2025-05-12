@@ -4,10 +4,24 @@ import React from 'react';
 import './QuizProgress.css';
 
 const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
+  // Validate props to prevent edge cases
+  const validCurrentIndex = Math.max(
+    0,
+    Math.min(currentIndex, totalQuestions - 1)
+  );
+  const validScore = Math.max(0, Math.min(score, totalQuestions));
+  const validTotalQuestions = Math.max(1, totalQuestions);
+
   // Calculate the percentage of questions completed for the progress bar
   // This turns the question index (which starts at 0) into a percentage value
   // For example, if we're on question 5 out of 10, this will be 50%
-  const progressPercentage = (currentIndex / totalQuestions) * 100;
+  const progressPercentage = (validCurrentIndex / validTotalQuestions) * 100;
+
+  // Ensure progress percentage is within valid range
+  const clampedProgressPercentage = Math.max(
+    0,
+    Math.min(100, progressPercentage)
+  );
 
   return (
     <div className="quiz-progress">
@@ -18,7 +32,7 @@ const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
           <span>Question</span>
           {/* Add 1 to currentIndex because array indexes start at 0 but question numbers start at 1 */}
           <strong>
-            {currentIndex + 1} / {totalQuestions}
+            {validCurrentIndex + 1} / {validTotalQuestions}
           </strong>
         </div>
 
@@ -26,7 +40,7 @@ const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
         <div className="score-display">
           <span>Score</span>
           <strong>
-            {score} / {totalQuestions}
+            {validScore} / {validTotalQuestions}
           </strong>
         </div>
       </div>
@@ -37,7 +51,7 @@ const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
             Uses dynamic inline style to set width based on calculated percentage */}
         <div
           className="progress-bar-fill"
-          style={{ width: `${progressPercentage}%` }}
+          style={{ width: `${clampedProgressPercentage}%` }}
         ></div>
         {/* The progress-bar-fill::after pseudo-element (defined in CSS) 
             creates the animated shine effect across the bar */}

@@ -1,7 +1,7 @@
 // This is the main Quiz page component that coordinates the entire quiz experience
 // It manages the quiz state, renders different components based on the quiz stage,
 // and handles interaction with Firebase for user authentication and score saving
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizLayout from '../components/QuizLayout';
 import QuizUserInfo from '../components/QuizUserInfo';
@@ -52,11 +52,19 @@ const Quiz = () => {
   // State to toggle leaderboard visibility
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+  // State to track initial load status to prevent restoration during active quiz
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
   // State to control confirmation modal visibility
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   // Hook for programmatic navigation between routes
   const navigate = useNavigate();
+
+  // Helper function to get a stable user identifier
+  const getUserKey = useCallback((user) => {
+    return user?.email || user?.uid || 'anonymous';
+  }, []);
 
   // Effect to check if user is logged in and redirect if not
   // This runs when the component mounts and whenever user or authInitialized changes
@@ -71,6 +79,13 @@ const Quiz = () => {
   // Effect to load quiz state from localStorage when component mounts
   useEffect(() => {
     const restoreQuizState = () => {
+      // Prevent restoration if quiz is already active with questions
+      if (quizStarted && questions.length > 0) {
+        console.log('Quiz already active, skipping restoration');
+        setInitialLoadComplete(true);
+        return;
+      }
+
       try {
         // Try to get saved quiz state from localStorage
         const savedState = localStorage.getItem(QUIZ_STATE_KEY);
@@ -78,11 +93,14 @@ const Quiz = () => {
         if (savedState) {
           const parsedState = JSON.parse(savedState);
 
-          // Only restore state if we have questions and the user is the same
+          // Validate the saved state more thoroughly
           if (
             parsedState.questions &&
             parsedState.questions.length > 0 &&
-            parsedState.userId === user?.uid
+            parsedState.userId === getUserKey(user) &&
+            typeof parsedState.currentIndex === 'number' &&
+            parsedState.currentIndex >= 0 &&
+            parsedState.currentIndex < parsedState.questions.length
           ) {
             // Restore all quiz state from localStorage
             setQuestions(parsedState.questions);
@@ -92,20 +110,36 @@ const Quiz = () => {
             setQuizStarted(parsedState.quizStarted);
 
             console.log('Restored quiz state from localStorage');
+          } else {
+            console.log('Invalid saved state found, clearing localStorage');
+            localStorage.removeItem(QUIZ_STATE_KEY);
           }
         }
       } catch (error) {
         console.error('Error restoring quiz state:', error);
         // If there's an error, clear localStorage to prevent future issues
         localStorage.removeItem(QUIZ_STATE_KEY);
+      } finally {
+        setInitialLoadComplete(true);
       }
     };
 
-    // Only restore state if user is logged in
-    if (user) {
+    // Only restore state if user is logged in and initial load isn't complete
+    if (user && !initialLoadComplete) {
       restoreQuizState();
     }
-  }, [user, setQuestions, setCurrentIndex, setScore, setQuizCompleted]);
+  }, [
+    user,
+    quizStarted,
+    questions.length,
+    initialLoadComplete,
+    setQuestions,
+    setCurrentIndex,
+    setScore,
+    setQuizCompleted,
+    setQuizStarted,
+    getUserKey,
+  ]);
 
   // Effect to save quiz state to localStorage whenever relevant state changes
   useEffect(() => {
@@ -118,7 +152,7 @@ const Quiz = () => {
         quizCompleted,
         quizStarted,
         quizOptions,
-        userId: user.uid, // Save user ID to verify ownership on reload
+        userId: getUserKey(user), // Save user identifier to verify ownership on reload
         timestamp: Date.now(), // For potential expiration checks
       };
 
@@ -133,15 +167,20 @@ const Quiz = () => {
     quizCompleted,
     quizOptions,
     user,
+    getUserKey,
   ]);
 
   // Effect to load top scores from Firebase when component mounts
   useEffect(() => {
     const fetchTopScores = async () => {
-      // Get top scores from Firestore database
-      const scores = await getTopScores();
-      // Update component state with the scores
-      setTopScores(scores);
+      try {
+        // Get top scores from Firestore database
+        const scores = await getTopScores();
+        // Update component state with the scores
+        setTopScores(scores);
+      } catch (error) {
+        console.error('Error fetching top scores:', error);
+      }
     };
     fetchTopScores();
   }, []);
@@ -157,12 +196,49 @@ const Quiz = () => {
         email: user.email,
         displayName: user.displayName || user.email,
         score,
+      }).catch((error) => {
+        console.error('Error saving score:', error);
       });
 
-      // Optional: Uncomment the line below if you want to clear localStorage when quiz is completed
-      // localStorage.removeItem(QUIZ_STATE_KEY);
+      // Clear localStorage when quiz is completed
+      localStorage.removeItem(QUIZ_STATE_KEY);
     }
   }, [quizCompleted, user, score, questions.length]);
+
+  // Effect to reset question answered state when question changes
+  useEffect(() => {
+    // This could be used for per-question timers if implemented
+  }, [currentIndex]);
+
+  // Validate current state to prevent edge cases
+  useEffect(() => {
+    // If we have questions but current index is out of bounds, complete the quiz
+    if (
+      questions.length > 0 &&
+      currentIndex >= questions.length &&
+      !quizCompleted
+    ) {
+      console.warn('Current index out of bounds, completing quiz');
+      setQuizCompleted(true);
+    }
+
+    // If quiz is started but no questions, reset to setup
+    if (quizStarted && questions.length === 0 && !loading && !error) {
+      console.warn('Quiz started but no questions available, resetting');
+      setQuizStarted(false);
+      resetQuiz();
+    }
+  }, [
+    questions.length,
+    currentIndex,
+    quizCompleted,
+    quizStarted,
+    loading,
+    error,
+    resetQuiz,
+    setQuizCompleted,
+    setQuizStarted,
+  ]);
 
   // Handler for when user starts the quiz with selected options
   const handleStartQuiz = (options) => {
@@ -206,6 +282,11 @@ const Quiz = () => {
     resetQuiz();
   };
 
+  // Handler to toggle the leaderboard visibility
+  const toggleLeaderboard = () => {
+    setShowLeaderboard(!showLeaderboard);
+  };
+
   // Show the confirmation modal when user clicks Cancel Quiz
   const handleCancelQuizClick = () => {
     setIsConfirmModalOpen(true);
@@ -222,11 +303,6 @@ const Quiz = () => {
     resetQuiz();
   };
 
-  // Handler to toggle the leaderboard visibility
-  const toggleLeaderboard = () => {
-    setShowLeaderboard(!showLeaderboard);
-  };
-
   // Show loading spinner while Firebase authentication is initializing
   if (!authInitialized) {
     return (
@@ -238,6 +314,13 @@ const Quiz = () => {
       </QuizLayout>
     );
   }
+
+  // Check if we have a valid current question
+  const hasValidQuestion =
+    currentQuestion &&
+    questions.length > 0 &&
+    currentIndex >= 0 &&
+    currentIndex < questions.length;
 
   return (
     <QuizLayout>
@@ -297,7 +380,7 @@ const Quiz = () => {
               </button>
               {showLeaderboard && <Leaderboard scores={topScores} />}
             </>
-          ) : currentQuestion ? (
+          ) : hasValidQuestion ? (
             // ACTIVE QUIZ SCREEN
             // Shown during the quiz when questions are available
             <>
@@ -321,7 +404,7 @@ const Quiz = () => {
             </>
           ) : (
             // FALLBACK - NO QUESTIONS
-            // Shown if API returned zero questions
+            // Shown if API returned zero questions or invalid state
             <div className="no-questions">
               <p>No questions available. Please try different options.</p>
               <button onClick={handleNewQuiz} className="retry-btn">

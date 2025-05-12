@@ -1,6 +1,6 @@
 // This component displays a single quiz question with multiple answer choices
 // It handles user selections, displays feedback, and communicates with parent components
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './QuestionCard.css';
 
 const QuestionCard = ({ question, onAnswer }) => {
@@ -12,6 +12,43 @@ const QuestionCard = ({ question, onAnswer }) => {
 
   // Store timeout ID in a ref so we can clear it if needed
   const timeoutRef = useRef(null);
+
+  // Reset state when question changes
+  useEffect(() => {
+    setSelectedAnswer(null);
+    setShowFeedback(false);
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, [question]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []); // Empty dependency array is correct here for cleanup on unmount
+
+  // Validate question prop AFTER all hooks are called
+  if (
+    !question ||
+    !question.allAnswers ||
+    !Array.isArray(question.allAnswers)
+  ) {
+    console.error('Invalid question prop:', question);
+    return (
+      <div className="question-card">
+        <div className="question-content">
+          <p>Error: Invalid question data</p>
+        </div>
+      </div>
+    );
+  }
 
   // Handler function that runs when a user clicks on an answer
   const handleAnswerClick = (answer) => {
@@ -40,7 +77,9 @@ const QuestionCard = ({ question, onAnswer }) => {
 
     // Call the parent component's onAnswer function with the selected answer
     // This allows the parent to update score, move to next question, etc.
-    onAnswer(selectedAnswer);
+    if (typeof onAnswer === 'function') {
+      onAnswer(selectedAnswer);
+    }
 
     // Reset our component state for the next question
     setSelectedAnswer(null);
@@ -53,17 +92,19 @@ const QuestionCard = ({ question, onAnswer }) => {
   // Letters for answer options
   const answerLetters = ['A', 'B', 'C', 'D'];
 
+  // Ensure we don't have more answers than letters
+  const maxAnswers = Math.min(question.allAnswers.length, answerLetters.length);
+
   return (
     <div className="question-card">
       {/* Main content including question and answers */}
       <div className="question-content">
-        <h2
-          className="quiz-question"
-          dangerouslySetInnerHTML={{ __html: question.question }}
-        />
+        <h2 className="quiz-question">
+          {question.question || 'Question not available'}
+        </h2>
 
         <div className="answers">
-          {question.allAnswers.map((answer, index) => {
+          {question.allAnswers.slice(0, maxAnswers).map((answer, index) => {
             let buttonClass = 'answer-button';
             if (showFeedback) {
               if (answer === question.correct_answer) {
@@ -83,10 +124,9 @@ const QuestionCard = ({ question, onAnswer }) => {
                 disabled={showFeedback}
               >
                 <span className="answer-letter">{answerLetters[index]}</span>
-                <span
-                  className="answer-text"
-                  dangerouslySetInnerHTML={{ __html: answer }}
-                />
+                <span className="answer-text">
+                  {answer || 'Answer not available'}
+                </span>
               </button>
             );
           })}
