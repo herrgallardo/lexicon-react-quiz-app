@@ -3,8 +3,8 @@
 ------------------------------------ */
 .leaderboard {
     max-width: 500px;
+    width: 100%;
     margin: 2rem auto 0 auto;
-    padding: 1.5rem;
     margin-top: 4rem;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 1rem;
@@ -26,11 +26,17 @@
 }
 
 .leaderboard li {
-    font-size: 1rem;
-    padding: 0.5rem 0;
+    font-size: 1.2rem;
+    padding: 0.7rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .leaderboard li:last-child {
     border-bottom: none;
+}
+
+.score-timestamp {
+    font-size: 1rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
 }

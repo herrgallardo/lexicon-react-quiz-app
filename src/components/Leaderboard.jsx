@@ -57,7 +57,7 @@ const Leaderboard = () => {
               <strong>{entry.displayName || entry.email}</strong> —{' '}
               {entry.score} pts
               {entry.timestamp && (
-                <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>
+                <div className="score-timestamp">
                   {entry.timestamp.toLocaleDateString()}{' '}
                   {entry.timestamp.toLocaleTimeString()}
                 </div>
