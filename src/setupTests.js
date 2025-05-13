@@ -33,14 +33,18 @@ jest.mock('firebase/firestore', () => ({
 // ——— Stub axios HTTP client ———
 // Mocks axios.create() and common methods so no real HTTP calls occur
 jest.mock('axios', () => {
-  const mockAxios = jest.fn();
-  mockAxios.create = jest.fn(() => ({
-    interceptors: { response: { use: jest.fn() } }, // stub interceptors
-    get: jest.fn(), // stub GET
-    post: jest.fn(), // stub POST
-  }));
-  mockAxios.get = jest.fn(); // stub direct axios.get
-  return mockAxios;
+  // this is the fake instance your code does `axios.create(...)` to get
+  const mockInstance = {
+    interceptors: { response: { use: jest.fn() } },
+    get: jest.fn(),
+  };
+
+  return {
+    // when your service does `axios.create(...)`, return the above instance
+    create: jest.fn(() => mockInstance),
+    // if anywhere you do direct axios.get, you can still call through
+    get: mockInstance.get,
+  };
 });
 
 // ——— Stub React Router DOM ———
