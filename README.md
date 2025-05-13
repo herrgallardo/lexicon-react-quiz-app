@@ -33,7 +33,7 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 REACT_APP_FIREBASE_APP_ID=your_app_id
 ```
 
-> 🧠 Make sure all keys start with `REACT_APP_` — this is required by Create React App.
+> Make sure all keys start with `REACT_APP_` — this is required by Create React App.
 
 ---
 
@@ -64,6 +64,44 @@ Your app will now load the Firebase config securely from `.env.local`.
 
 ---
 
+## 🧪 Testing
+
+We use **Jest** and **React Testing Library** to verify both unit and integration logic.
+
+### ▶️ Run tests
+
+```bash
+npm test
 ```
 
-```
+This command runs all test suites under `src/__tests__` and watches for changes.
+
+### 🗂 Test Structure
+
+- **Unit tests** in `src/__tests__`:
+
+  - `quizLogic.test.js` — tests pure scoring logic
+  - `firestoreService.test.js` — mocks Firestore to test `saveScore`
+  - `getTopScores.test.js` — mocks Firestore to test leaderboard fetch
+  - `authService.test.js` — tests Firebase auth wrappers
+  - `AuthContext.test.js` — tests `AuthProvider` context behavior
+  - `LoginForm.test.js` — tests login, signup, and reset flows in the form
+
+- **Mocks and setup**:
+
+  - `src/setupTests.js` contains Jest mocks for:
+
+    - Firebase (`firebase/auth`, `firebase/firestore`)
+    - `react-router-dom` components and hooks
+    - `axios` HTTP client
+    - `window.alert`
+
+### ✍️ Writing new tests
+
+1. **Create a test file** alongside your feature, e.g. `MyFeature.test.js` in `src/__tests__`.
+2. **Import** the function or component under test.
+3. **Arrange** any required mocks (Firestore, Auth, API calls).
+4. **Act** by invoking the function or rendering the component.
+5. **Assert** expected behavior with Jest matchers (e.g. `toHaveBeenCalledWith`, `toEqual`).
+
+---

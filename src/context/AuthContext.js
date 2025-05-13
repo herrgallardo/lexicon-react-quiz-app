@@ -12,7 +12,11 @@ import { auth } from '../firebase/firebaseInit'; // Firebase auth instance
 import { onAuthStateChanged } from 'firebase/auth'; // Listener for auth state changes
 
 // Creates a new context to share the auth state
-export const AuthContext = createContext();
+// After: provide a safe default value for tests + runtime
+export const AuthContext = createContext({
+  user: null,
+  authInitialized: false,
+});
 
 // This component wraps the app and provides the auth context
 export const AuthProvider = ({ children }) => {
