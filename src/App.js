@@ -18,6 +18,7 @@ import DevMenu from './components/DevMenu';
 import Quiz from './pages/Quiz';
 import Auth from './pages/Auth';
 import LoginForm from './pages/LoginForm';
+import About from './pages/About';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<LoginForm />} />
+             <Route path="/about" element={<About />} />
           </Routes>
         </div>
         <DevMenu />
