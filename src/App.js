@@ -26,9 +26,9 @@ function App() {
         <Header /> {/* Global header (e.g. logout, nav) */}
         <div className="container">
           <Routes>
-            <Route path="/" element={<Navigate to="/LoginForm" replace />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/LoginForm" element={<LoginForm />} />
+            <Route path="/login" element={<LoginForm />} />
           </Routes>
         </div>
         <DevMenu />

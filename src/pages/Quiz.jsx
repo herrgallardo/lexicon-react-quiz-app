@@ -72,7 +72,7 @@ const Quiz = () => {
     // Only redirect if Firebase auth has finished initializing
     if (authInitialized && !user) {
       // If no user is authenticated, redirect to auth page
-      navigate('/LoginForm');
+      navigate('/login');
     }
   }, [user, authInitialized, navigate]);
 

@@ -13,7 +13,7 @@ function Header() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/LoginForm');
+    navigate('/login');
   };
 
   // Function to toggle menu visibility
