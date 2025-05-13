@@ -211,12 +211,9 @@
 /* Make the user info section more prominent */
 .quiz-user {
   margin-bottom: 1rem; /* Reduced space below user info */
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
   padding: 0.75rem 1.5rem; /* Reduced padding */
   border-radius: 1rem; /* Rounded corners */
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.3),
-    0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+
   width: 100%; /* Take full width */
   max-width: 600px; /* Limit maximum width */
   box-sizing: border-box; /* Include padding in width calculation */
