@@ -13,7 +13,7 @@ function Header() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/auth');
+    navigate('/login');
   };
 
   // Function to toggle menu visibility
@@ -33,7 +33,10 @@ function Header() {
 
         {/* Hamburger menu for mobile */}
         <div className="hamburger" onClick={toggleMenu}>
-          <div className="bar"> {user && <button onClick={handleLogout}>Log out</button>}</div>
+          <div className="bar">
+            {' '}
+            {user && <button onClick={handleLogout}>Log out</button>}
+          </div>
           <div className="bar"></div>
           <div className="bar"></div>
         </div>

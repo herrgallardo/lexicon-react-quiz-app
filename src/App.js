@@ -17,6 +17,7 @@ import DevMenu from './components/DevMenu';
 // Pages
 import Quiz from './pages/Quiz';
 import Auth from './pages/Auth';
+import LoginForm from './pages/LoginForm';
 
 function App() {
   return (
@@ -25,9 +26,9 @@ function App() {
         <Header /> {/* Global header (e.g. logout, nav) */}
         <div className="container">
           <Routes>
-            <Route path="/" element={<Navigate to="/auth" replace />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/login" element={<LoginForm />} />
           </Routes>
         </div>
         <DevMenu />
