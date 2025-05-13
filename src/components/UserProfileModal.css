@@ -1,0 +1,60 @@
+/* UserProfileModal.css */
+
+.user-profile-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*center horizontally relative to parent */
+    width: 260px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-align: center;
+    z-index: 999;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #555;
+    float: right;
+    cursor: pointer;
+}
+
+.user-avatar-large {
+    margin: 1rem auto 0.5rem;
+    color: #7577eb;
+    font-size: 1.5rem;
+}
+
+.coming-soon {
+    margin-top: 0.5rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.logout-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    background-color: #7577eb;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #6365d4;
+}
+
+.user-email {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #4b5563;
+    opacity: 0.9;
+}

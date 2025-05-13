@@ -7,7 +7,12 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      <p>&copy; {year} Lexicon Quiz App. All rights reserved.</p>
+      <p>
+        © 2025 Lexicon Quiz App — Built with love by an awesome team{' '}
+        <span role="img" aria-label="purple heart">
+          ❤️
+        </span>
+      </p>
     </footer>
   );
 };

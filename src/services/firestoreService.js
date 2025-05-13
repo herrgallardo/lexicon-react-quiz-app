@@ -6,9 +6,9 @@
 // - Handles user profile saving/loading
 // - Handles quiz score saving
 // - Fetches leaderboard (top 10 scores)
-// - Dev tool: allows deleting all scores
+// - Dev tool: allows deleting all scores (admin-only)
 
-import { db } from '../firebase/firebaseInit';
+import { db, auth } from '../firebase/firebaseInit';
 import {
   collection,
   addDoc,
@@ -27,13 +27,14 @@ import {
  * Saves a quiz score to the "scores" collection.
  * Includes user ID, email, score, and timestamp.
  */
-export const saveScore = async ({ userId, email, score }) => {
+export const saveScore = async ({ userId, email, score, settings = {} }) => {
   try {
     const docRef = await addDoc(collection(db, 'scores'), {
       userId,
       email,
       score,
       createdAt: Timestamp.now(),
+      ...settings, // Optional quiz settings (e.g., category, difficulty)
     });
     console.log('✅ Score saved with ID:', docRef.id);
   } catch (error) {
@@ -42,7 +43,7 @@ export const saveScore = async ({ userId, email, score }) => {
 };
 
 /**
- * Saves user profile to the "users" collection using their UID.
+ * Saves a user profile to the "users" collection using their UID.
  * This helps link auth users to display names or additional info.
  */
 export const saveUserProfile = async ({ uid, displayName, email }) => {
@@ -95,14 +96,23 @@ export const getTopScores = async () => {
 
 /**
  * Deletes all score entries from the "scores" collection.
- * Useful for dev testing or resetting state.
+ * Only works if the current user is the admin.
+ * Useful for dev testing or resetting leaderboard state.
  */
 export const deleteAllScores = async () => {
+  const currentUser = auth.currentUser;
+  const ADMIN_UID = process.env.REACT_APP_ADMIN_UID; // 🔐 Loaded from .env.local
+
+  // Check if the current user is authorized
+  if (!currentUser || currentUser.uid !== ADMIN_UID) {
+    alert('❌ You are not authorized to reset scores.');
+    return;
+  }
+
   try {
     const scoresRef = collection(db, 'scores');
     const snapshot = await getDocs(scoresRef);
 
-    // Delete each score document one by one
     const deletePromises = snapshot.docs.map((docSnap) =>
       deleteDoc(doc(db, 'scores', docSnap.id))
     );
