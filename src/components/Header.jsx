@@ -54,6 +54,11 @@ function Header() {
               Quiz
             </a>
           </li>
+          <li className="nav-item">
+            <a href="/about" className="nav-link">
+              About
+            </a>
+          </li>
         </ul>
       </div>
     </header>
