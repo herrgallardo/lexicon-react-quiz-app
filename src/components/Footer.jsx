@@ -8,7 +8,7 @@ const Footer = () => {
       <p>
         © {year} Quizify Quiz App — Built with love by an awesome team{' '}
         <span role="img" aria-label="purple heart">
-          💜
+          🤍
         </span>
       </p>
     </footer>
