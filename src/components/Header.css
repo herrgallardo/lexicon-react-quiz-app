@@ -70,6 +70,33 @@
   color: #e0e0ff;
 }
 
+/* ───────────── USER INFO ───────────── */
+.user-info {
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+  opacity: 0.9;
+  margin: 0 1rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Only show on desktop (hide under mobile breakpoint) */
+.user-info.desktop {
+  display: none;
+}
+
+.user-info:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 769px) {
+  .user-info.desktop {
+    display: inline-block;
+  }
+}
+
+/* Actions in the right grid cell */
 .actions {
   display: flex;
   align-items: center;

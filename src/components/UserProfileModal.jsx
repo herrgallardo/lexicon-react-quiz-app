@@ -25,6 +25,11 @@ const UserProfileModal = ({ onClose }) => {
   const { user } = useContext(AuthContext);
   if (!user) return null;
 
+  const handleLogout = async () => {
+    await logout();
+    onClose();
+  };
+
   return (
     <div className="user-profile-modal">
       {/* Close button in top-right corner */}
@@ -47,8 +52,7 @@ const UserProfileModal = ({ onClose }) => {
       {/* Placeholder for upcoming profile features */}
       <p className="coming-soon">Profilfunktion kommer snart!</p>
 
-      {/* Logout button */}
-      <button className="logout-button" onClick={logout}>
+      <button className="logout-button" onClick={handleLogout}>
         Logga ut
       </button>
     </div>
