@@ -15,6 +15,14 @@ const Header = () => {
 
   // close mobile menu when switching to desktop
   useEffect(() => {
+    // ——— SSR, Test-env & feature-detect guard ———
+    // In Node (SSR) there is no window; in Jest’s JSDOM, matchMedia isn’t implemented;
+    // older browsers may also lack matchMedia. Bail out early to prevent test failures
+    // and runtime errors.
+    if (typeof window === 'undefined' || !window.matchMedia) {
+      return;
+    }
+
     const mq = window.matchMedia('(min-width: 769px)');
     const handler = (e) => {
       if (e.matches) setMenuOpen(false);
