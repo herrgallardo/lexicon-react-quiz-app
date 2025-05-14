@@ -2,35 +2,35 @@
    Leaderboard
 ------------------------------------ */
 .leaderboard {
-    max-width: 500px;
-    margin: 2rem auto 0 auto;
-    padding: 1.5rem;
-    margin-top: 4rem;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 1rem;
-    color: white;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    align-self: center;
+  max-width: 500px;
+  margin: 2rem auto 0 auto;
+  padding: 1.5rem;
+  margin-top: 4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  align-self: center;
 }
 
 .leaderboard h2 {
-    margin-bottom: 1.25rem;
-    font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .leaderboard ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .leaderboard li {
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .leaderboard li:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
