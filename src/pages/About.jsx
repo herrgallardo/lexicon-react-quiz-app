@@ -3,7 +3,6 @@ import './About.css'; // Importerar CSS för styling
 
 // Listan över team-medlemmar med GitHub-länkar
 const teamMembers = [
- 
   {
     id: 1,
     name: 'Antonio Gallardo Girela',
@@ -25,7 +24,7 @@ const teamMembers = [
     image: '/images/jonathan.png',
     github: 'https://github.com/JonathanPersson12',
   },
-  
+
   {
     id: 4,
     name: 'Mirjana Vasic',

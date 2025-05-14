@@ -30,7 +30,7 @@ function App() {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<LoginForm />} />
-             <Route path="/about" element={<About />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
         <DevMenu />

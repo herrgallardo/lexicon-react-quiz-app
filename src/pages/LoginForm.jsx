@@ -1,10 +1,10 @@
 // src/pages/LoginForm.jsx
-import React, { useState, useEffect } from 'react';  // React and hooks for state management
+import React, { useState, useEffect } from 'react'; // React and hooks for state management
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 } from 'firebase/auth'; // Firebase authentication methods
 import { saveUserProfile } from '../services/firestoreService'; // Function to save user profile to Firestore
 import { auth } from '../firebase/firebaseInit'; // Firebase authentication instance
@@ -14,16 +14,13 @@ import './LoginForm.css'; // Custom UI styles for the LoginForm component
 // LoginForm component
 // This component handles user authentication, including login, registration, and password reset.
 function LoginForm() {
-
   // These states variables manage the email, password, and user authentication input fields.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isNewUser, setIsNewUser] = useState(false);
 
-
   // This state keeps track of the currently authenticated user.
   const [user, setUser] = useState(null);
-
 
   // This state manages the password reset, email input field and visibility of the password reset form..
   const [resetEmail, setResetEmail] = useState('');
@@ -31,7 +28,7 @@ function LoginForm() {
 
   // This manage  error messages that may occur during authentication.
   const [error, setError] = useState('');
-  
+
   // Router for navigation
   const navigate = useNavigate();
 
@@ -52,20 +49,24 @@ function LoginForm() {
 
   // Handle form submission for login or registration
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setError('');
 
     // Check if the user is new or existing
     if (isNewUser) {
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         const user = userCredential.user;
 
         // Save user profile to Firestore and alert that they have created an account
         await saveUserProfile({
           uid: user.uid,
           displayName: email.split('@')[0], // Default name from email
-          email: user.email
+          email: user.email,
         });
         alert('Account created!');
       } catch (error) {
@@ -111,81 +112,86 @@ function LoginForm() {
   // It also displays error messages if any occur during authentication.
   return (
     <div className="login-layout">
-  <div className="login-container">
-    <div className="login-box">
-      
-      {/* Form for login or registration */}
-      <form onSubmit={showReset ? handleResetPassword : handleSubmit}>
-        <h1>{showReset ? 'Reset Password' : isNewUser ? 'Sign Up' : 'Login'}</h1>
+      <div className="login-container">
+        <div className="login-box">
+          {/* Form for login or registration */}
+          <form onSubmit={showReset ? handleResetPassword : handleSubmit}>
+            <h1>
+              {showReset ? 'Reset Password' : isNewUser ? 'Sign Up' : 'Login'}
+            </h1>
 
-        {/* Display error message if any */}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+            {/* Display error message if any */}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {/* Input fields for email and password */}
-        {!showReset && (
-          <>
-            <div className="input-box">
-              <input
-                type="email"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+            {/* Input fields for email and password */}
+            {!showReset && (
+              <>
+                <div className="input-box">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="input-box">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Input field for password reset email */}
+            {showReset && (
+              <div className="input-box">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                />
+              </div>
+            )}
+
+            {/* Submit button */}
+            <button type="submit" className="login-btn">
+              {showReset ? 'Send Reset Email' : isNewUser ? 'Sign Up' : 'Login'}
+            </button>
+
+            {/* Toggle link to switch between login and registration */}
+            {!showReset && (
+              <div className="register-link">
+                <p>
+                  {isNewUser
+                    ? 'Already have an account?'
+                    : "Don't have an account?"}{' '}
+                  <a href="#" onClick={() => setIsNewUser(!isNewUser)}>
+                    {isNewUser ? 'Login' : 'Register'}
+                  </a>
+                </p>
+              </div>
+            )}
+
+            {/* Password reset link */}
+            <div className="reset-password">
+              <p>
+                {showReset
+                  ? 'Enter your email to reset password'
+                  : 'Forgot password?'}{' '}
+                <a href="#" onClick={() => setShowReset(!showReset)}>
+                  {showReset ? 'Cancel' : 'Reset'}
+                </a>
+              </p>
             </div>
-
-            <div className="input-box">
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-          </>
-        )}
-
-        {/* Input field for password reset email */}
-        {showReset && (
-          <div className="input-box">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              onChange={(e) => setResetEmail(e.target.value)}
-              required
-            />
-          </div>
-        )}
-
-        {/* Submit button */}
-        <button type="submit" className="login-btn">
-          {showReset ? 'Send Reset Email' : isNewUser ? 'Sign Up' : 'Login'}
-        </button>
-
-        {/* Toggle link to switch between login and registration */}
-        {!showReset && (
-          <div className="register-link">
-            <p>
-              {isNewUser ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <a href="#" onClick={() => setIsNewUser(!isNewUser)}>
-                {isNewUser ? 'Login' : 'Register'}
-              </a>
-            </p>
-          </div>
-        )}
-
-        {/* Password reset link */}
-        <div className="reset-password">
-          <p>
-            {showReset ? 'Enter your email to reset password' : 'Forgot password?'}{' '}
-            <a href="#" onClick={() => setShowReset(!showReset)}>
-              {showReset ? 'Cancel' : 'Reset'}
-            </a>
-          </p>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-</div>
   );
 }
 

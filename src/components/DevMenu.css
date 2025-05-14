@@ -1,58 +1,58 @@
 /* src/components/DevMenu.css */
 
 .dev-toggle {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    background-color: #4e54c8;
-    color: white;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    transition: background 0.2s ease-in-out;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #4e54c8;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: background 0.2s ease-in-out;
 }
 
 .dev-toggle:hover {
-    background-color: #3b3fbb;
+  background-color: #3b3fbb;
 }
 
 .dev-panel {
-    position: fixed;
-    bottom: 3.5rem;
-    right: 1rem;
-    background-color: white;
-    color: black;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    z-index: 998;
-    width: 220px;
+  position: fixed;
+  bottom: 3.5rem;
+  right: 1rem;
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 998;
+  width: 220px;
 }
 
 .dev-panel h4 {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
 }
 
 .dev-panel button {
-    display: block;
-    width: 100%;
-    margin: 0.25rem 0;
-    padding: 0.5rem;
-    background-color: #eee;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
+  display: block;
+  width: 100%;
+  margin: 0.25rem 0;
+  padding: 0.5rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .dev-panel button:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
