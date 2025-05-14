@@ -34,3 +34,10 @@
 .leaderboard li:last-child {
   border-bottom: none;
 }
+
+/* Timestamp under each score in the leaderboard */
+.score-timestamp {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
