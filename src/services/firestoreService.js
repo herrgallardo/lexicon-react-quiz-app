@@ -36,7 +36,7 @@ export const saveScore = async ({ userId, email, score, settings = {} }) => {
       createdAt: Timestamp.now(),
       ...settings, // Optional quiz settings (e.g., category, difficulty)
     });
-    console.log('✅ Score saved with ID:', docRef.id);
+    console.log('✅ Score saved with ID:', docRef?.id);
   } catch (error) {
     console.error('❌ Error saving score:', error);
   }
