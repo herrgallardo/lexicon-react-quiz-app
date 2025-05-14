@@ -13,10 +13,14 @@ const QuestionCard = ({ question, onAnswer }) => {
   // Store timeout ID in a ref so we can clear it if needed
   const timeoutRef = useRef(null);
 
+  // Store the current answer in a ref so it's always available when needed
+  const currentAnswerRef = useRef(null);
+
   // Reset state when question changes
   useEffect(() => {
     setSelectedAnswer(null);
     setShowFeedback(false);
+    currentAnswerRef.current = null;
 
     // Clear any existing timeout
     if (timeoutRef.current) {
@@ -55,8 +59,9 @@ const QuestionCard = ({ question, onAnswer }) => {
     // If feedback is already showing, don't allow further selections
     if (showFeedback) return;
 
-    // Store the user's selected answer in state
+    // Store the user's selected answer in state AND ref
     setSelectedAnswer(answer);
+    currentAnswerRef.current = answer; // This ensures we always have the answer available
 
     // Show feedback about whether the answer was correct
     setShowFeedback(true);
@@ -75,15 +80,20 @@ const QuestionCard = ({ question, onAnswer }) => {
       timeoutRef.current = null;
     }
 
+    // Use the ref value instead of state to ensure we have the correct answer
+    const answerToSend = currentAnswerRef.current;
+
     // Call the parent component's onAnswer function with the selected answer
     // This allows the parent to update score, move to next question, etc.
-    if (typeof onAnswer === 'function') {
-      onAnswer(selectedAnswer);
+    if (typeof onAnswer === 'function' && answerToSend !== null) {
+      console.log('Sending answer to parent:', answerToSend);
+      onAnswer(answerToSend);
     }
 
     // Reset our component state for the next question
     setSelectedAnswer(null);
     setShowFeedback(false);
+    currentAnswerRef.current = null;
   };
 
   // Determine if the selected answer is correct by comparing with question's correct_answer

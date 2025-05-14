@@ -1,7 +1,10 @@
-/* ------------------------------------
-   Quiz Layout and Container
------------------------------------- */
+/* src/components/QuizLayout.css
+ * Layout-specific styling for quiz pages
+ */
+
+/* Main layout container with gradient background */
 .quiz-layout {
+<<<<<<< HEAD
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -18,6 +21,21 @@
     /* Prevent horizontal scroll */
     width: 100%;
     /* Ensure full width */
+=======
+  min-height: 100vh;
+  min-height: 100svh; /* Small viewport height for better mobile support */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem; /* Responsive padding */
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  position: relative; /* Creates positioning context */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
+>>>>>>> origin/main
 }
 
 /* Add a subtle animated gradient background */
@@ -34,7 +52,9 @@
     z-index: 0;
 }
 
+/* Main content container for quiz elements */
 .quiz-container {
+<<<<<<< HEAD
     background: transparent;
     text-align: center;
     max-width: 650px;
@@ -146,10 +166,36 @@
     .quiz-user {
         margin-bottom: 1rem;
     }
+=======
+  background: transparent;
+  text-align: center;
+  max-width: min(650px, 100% - 1rem); /* Responsive maximum width */
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative; /* Place above the background */
+  z-index: 1;
+  padding: 0;
 }
 
-/* Smaller phones */
+/* Responsive adjustments for tablet screens */
+@media (max-width: 768px) {
+  .quiz-layout {
+    padding: 0.25rem; /* Reduced padding on tablets */
+  }
+
+  .quiz-container {
+    max-width: 100%;
+  }
+>>>>>>> origin/main
+}
+
+/* Mobile-specific adjustments */
 @media (max-width: 480px) {
+<<<<<<< HEAD
     .quiz-layout {
         padding: 0.5rem 1rem 2rem;
         /* Increased horizontal padding */
@@ -176,3 +222,20 @@
         padding-bottom: 1rem;
     }
 }
+=======
+  .quiz-layout {
+    padding: 0.125rem; /* Minimal padding on mobile */
+  }
+
+  .quiz-container {
+    min-height: 0; /* Allow container to shrink on very small screens */
+  }
+}
+
+/* Fix for iOS Safari viewport issues */
+@supports (-webkit-appearance: none) {
+  .quiz-layout {
+    min-height: -webkit-fill-available; /* Better iOS Safari support */
+  }
+}
+>>>>>>> origin/main
