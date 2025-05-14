@@ -1,68 +1,125 @@
-// Header.jsx - React component for a quiz app header with a responsive hamburger menu
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
-import './Header.css'; // Import CSS for styling
+import ConfirmationModal from './ConfirmationModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import './Header.css';
 
-function Header() {
-  // State to manage menu visibility
-  const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+const Header = () => {
   const { user } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const navigate = useNavigate();
 
+  // close mobile menu when switching to desktop
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 769px)');
+    const handler = (e) => {
+      if (e.matches) setMenuOpen(false);
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const toggleMenu = () => setMenuOpen((open) => !open);
+  const openLogoutModal = () => setShowLogoutModal(true);
   const handleLogout = async () => {
     await logout();
+    setShowLogoutModal(false);
     navigate('/login');
-  };
-
-  // Function to toggle menu visibility
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
   };
 
   return (
     <header className="header">
       <div className="header-content">
-        {/* Logo section */}
+        {/* Logo positioned absolutely */}
         <div className="logo">
           <a href="/">
             <img src="/images/logo.png" alt="Quizify Logo" />
           </a>
         </div>
 
-        {/* Hamburger menu for mobile */}
-        <div className="hamburger" onClick={toggleMenu}>
-          <div className="bar">
-            {' '}
-            {user && <button onClick={handleLogout}>Log out</button>}
-          </div>
-          <div className="bar"></div>
-          <div className="bar"></div>
-        </div>
-
-        {/* Navigation menu - toggled on mobile */}
-        <div> {user && <button onClick={handleLogout}>Log out</button>}</div>
-        <ul className={`nav-list ${menuOpen ? 'active' : ''}`}>
+        {/* Navigation centered in grid */}
+        <ul className={`nav-list${menuOpen ? ' active' : ''}`}>
           <li className="nav-item">
-            <a href="/" className="nav-link">
+            <a
+              href="/"
+              className="nav-link"
+              onClick={() => menuOpen && setMenuOpen(false)}
+            >
               Home
             </a>
           </li>
           <li className="nav-item">
-            <a href="/quiz" className="nav-link">
+            <a
+              href="/quiz"
+              className="nav-link"
+              onClick={() => menuOpen && setMenuOpen(false)}
+            >
               Quiz
             </a>
           </li>
           <li className="nav-item">
-            <a href="/about" className="nav-link">
+            <a
+              href="/about"
+              className="nav-link"
+              onClick={() => menuOpen && setMenuOpen(false)}
+            >
               About
             </a>
           </li>
+          {user && (
+            <li className="nav-item">
+              <button
+                className="logout-btn mobile"
+                onClick={openLogoutModal}
+                aria-label="Log out"
+              >
+                <FontAwesomeIcon icon={faSignOutAlt} />
+              </button>
+            </li>
+          )}
         </ul>
+
+        {/* Actions on the right */}
+        <div className="actions">
+          {/* Hamburger for mobile */}
+          <button
+            className="hamburger"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <span className="bar" />
+            <span className="bar" />
+            <span className="bar" />
+          </button>
+
+          {/* Desktop logout */}
+          {user && (
+            <button
+              className="logout-btn desktop"
+              onClick={openLogoutModal}
+              aria-label="Log out"
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} />
+            </button>
+          )}
+        </div>
+
+        <ConfirmationModal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={handleLogout}
+          title="Log out"
+          message="Are you sure you want to log out?"
+          confirmText="Log Out"
+          cancelText="Cancel"
+        />
       </div>
     </header>
   );
-}
+};
 
 export default Header;
