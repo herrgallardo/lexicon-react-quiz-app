@@ -56,16 +56,3 @@
 .dev-panel button:hover {
   background-color: #ddd;
 }
-
-.log-btn {
-  margin-top: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.85rem;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.log-btn:hover {
-  background-color: #ddd;
-}

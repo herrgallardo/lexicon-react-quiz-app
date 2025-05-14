@@ -1,3 +1,11 @@
 node_modules
 build
 public
+dist
+.git
+.DS_Store
+*.min.js
+*.min.css
+.env*
+coverage/
+.cache

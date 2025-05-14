@@ -1,24 +1,31 @@
 // src/pages/LoginForm.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // React and hooks for state management
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
-} from 'firebase/auth';
-import { saveUserProfile } from '../services/firestoreService';
-import { auth } from '../firebase/firebaseInit';
-import { useNavigate } from 'react-router-dom';
-import './LoginForm.css';
+} from 'firebase/auth'; // Firebase authentication methods
+import { saveUserProfile } from '../services/firestoreService'; // Function to save user profile to Firestore
+import { auth } from '../firebase/firebaseInit'; // Firebase authentication instance
+import { useNavigate } from 'react-router-dom'; // React Router for navigation
+import './LoginForm.css'; // Custom UI styles for the LoginForm component
 
 function LoginForm() {
+  // These states variables manage the email, password, and user authentication input fields.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isNewUser, setIsNewUser] = useState(false);
+
+  // This state keeps track of the currently authenticated user.
   const [user, setUser] = useState(null);
+
+  // This state manages the password reset, email input field and visibility of the password reset form..
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
   const [error, setError] = useState('');
+
+  // Router for navigation
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,14 +50,17 @@ function LoginForm() {
 
     if (isNewUser) {
       try {
-        const { user } = await createUserWithEmailAndPassword(
+        const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
           password
         );
+        const user = userCredential.user;
+
+        // Save user profile to Firestore and alert that they have created an account
         await saveUserProfile({
           uid: user.uid,
-          displayName: email.split('@')[0],
+          displayName: email.split('@')[0], // Default name from email
           email: user.email,
         });
         alert('Account created!');
@@ -88,12 +98,16 @@ function LoginForm() {
     <div className="login-layout">
       <div className="login-container">
         <div className="login-box">
+          {/* Form for login or registration */}
           <form onSubmit={showReset ? handleResetPassword : handleSubmit}>
             <h1>
               {showReset ? 'Reset Password' : isNewUser ? 'Sign Up' : 'Login'}
             </h1>
+
+            {/* Display error message if any */}
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
+            {/* Input fields for email and password */}
             {!showReset && (
               <>
                 <div className="input-box">
@@ -104,6 +118,7 @@ function LoginForm() {
                     required
                   />
                 </div>
+
                 <div className="input-box">
                   <input
                     type="password"
@@ -115,6 +130,7 @@ function LoginForm() {
               </>
             )}
 
+            {/* Input field for password reset email */}
             {showReset && (
               <div className="input-box">
                 <input
@@ -126,41 +142,32 @@ function LoginForm() {
               </div>
             )}
 
+            {/* Submit button */}
             <button type="submit" className="login-btn">
               {showReset ? 'Send Reset Email' : isNewUser ? 'Sign Up' : 'Login'}
             </button>
 
+            {/* Toggle link to switch between login and registration */}
             {!showReset && (
               <div className="register-link">
                 <p>
                   {isNewUser
                     ? 'Already have an account?'
                     : "Don't have an account?"}{' '}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsNewUser(!isNewUser);
-                    }}
-                  >
+                  <a href="#" onClick={() => setIsNewUser(!isNewUser)}>
                     {isNewUser ? 'Login' : 'Register'}
                   </a>
                 </p>
               </div>
             )}
 
+            {/* Password reset link */}
             <div className="reset-password">
               <p>
                 {showReset
                   ? 'Enter your email to reset password'
                   : 'Forgot password?'}{' '}
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowReset(!showReset);
-                  }}
-                >
+                <a href="#" onClick={() => setShowReset(!showReset)}>
                   {showReset ? 'Cancel' : 'Reset'}
                 </a>
               </p>
@@ -172,4 +179,6 @@ function LoginForm() {
   );
 }
 
+// Export the LoginForm component as the default export
+// This allows other components or files to import and use the LoginForm component.
 export default LoginForm;
