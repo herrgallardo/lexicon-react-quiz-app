@@ -215,7 +215,6 @@
 
 /* Make the user info section more prominent */
 .quiz-user {
-<<<<<<< HEAD
   margin-bottom: 1rem; /* Space below user info */
   padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
   border-radius: 1rem; /* Rounded corners */
