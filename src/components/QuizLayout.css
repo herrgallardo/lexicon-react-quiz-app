@@ -21,16 +21,18 @@
 
 /* Add a subtle animated gradient background */
 .quiz-layout::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 50%,
-            rgba(255, 255, 255, 0.1) 0%,
-            transparent 80%);
-    z-index: 0;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 80%
+  );
+  z-index: 0;
 }
 
 /* Main content container for quiz elements */
