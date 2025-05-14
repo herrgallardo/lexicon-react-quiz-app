@@ -9,21 +9,24 @@
   flex-direction: column; /* Stack content vertically */
   align-items: center; /* Center content horizontally */
   width: 100%; /* Take full available width */
-  max-width: 1200px; /* Limit maximum width */
+  max-width: min(1200px, 100% - 1rem); /* Responsive maximum width */
   margin: 0 auto; /* Center horizontally */
-  padding: 1rem 0.5rem; /* Reduced padding */
+  padding: 0.5rem; /* Responsive padding */
   box-sizing: border-box; /* Include padding in width calculation */
+  min-height: 100vh;
+  min-height: 100svh; /* Small viewport height for mobile */
 }
 
 /* Container for the quiz content area */
 .quiz-content {
   width: 100%; /* Take full available width */
-  max-width: 650px; /* Increased maximum width for better layout */
+  max-width: min(650px, 100% - 1rem); /* Responsive maximum width */
   margin: 0.5rem auto 0; /* Reduced top margin */
   display: flex; /* Use flexbox */
   flex-direction: column; /* Stack elements vertically */
   align-items: center; /* Center elements horizontally */
   box-sizing: border-box; /* Include padding in width calculation */
+  flex: 1;
 }
 
 /* Loading spinner container */
@@ -32,16 +35,17 @@
   flex-direction: column; /* Stack items vertically */
   align-items: center; /* Center items horizontally */
   justify-content: center; /* Center items vertically */
-  min-height: 200px; /* Reduced minimum height */
+  min-height: min(200px, 40vh); /* Responsive minimum height */
   color: white; /* White text color */
   width: 100%; /* Take full width */
   padding: 1rem; /* Add padding */
+  text-align: center;
 }
 
 /* Spinning loader animation */
 .spinner {
-  width: 40px; /* Reduced width of spinner */
-  height: 40px; /* Reduced height of spinner */
+  width: min(40px, 10vw); /* Responsive spinner size */
+  height: min(40px, 10vw); /* Responsive spinner size */
   border: 4px solid rgba(255, 255, 255, 0.3); /* Slightly thinner border */
   border-radius: 50%; /* Circle shape */
   border-top-color: white; /* Solid white top border creates spinner effect */
@@ -65,12 +69,12 @@
     0.2
   ); /* Semi-transparent red background */
   border-radius: 1rem; /* Rounded corners */
-  padding: 1.5rem 1rem; /* Reduced padding */
+  padding: clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
   text-align: center; /* Center text */
   color: white; /* White text color */
-  margin: 1.5rem 0; /* Reduced space above and below */
+  margin: 1rem 0; /* Space above and below */
   width: 100%; /* Take full width */
-  max-width: 600px; /* Limit maximum width */
+  max-width: min(600px, 100% - 1rem); /* Responsive maximum width */
   box-sizing: border-box; /* Include padding in width calculation */
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.3),
@@ -79,8 +83,9 @@
 
 /* Error message text */
 .error-container p {
-  margin-bottom: 1.25rem; /* Reduced space below text */
-  font-size: 1rem; /* Smaller font size */
+  margin-bottom: 1rem; /* Space below text */
+  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  line-height: 1.5;
 }
 
 /* Retry button for errors */
@@ -88,7 +93,7 @@
   background-color: white; /* White background */
   color: #4f46e5; /* Purple text color */
   border: none; /* No border */
-  padding: 0.75rem 1.25rem; /* Reduced padding */
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
   border-radius: 9999px; /* Fully rounded corners (pill shape) */
   font-weight: 600; /* Semi-bold text */
   cursor: pointer; /* Hand cursor on hover */
@@ -96,6 +101,9 @@
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.25),
     0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive font size */
+  min-height: 44px; /* Touch-friendly minimum height */
+  min-width: clamp(100px, 25vw, 140px); /* Responsive minimum width */
 }
 
 /* Hover effect for retry button */
@@ -103,9 +111,6 @@
   background-color: #4f46e5; /* Purple background on hover */
   color: white; /* White text on hover */
   transform: scale(1.05); /* Slightly grow button on hover */
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Leaderboard toggle button */
@@ -117,18 +122,21 @@
     0.15
   ); /* Semi-transparent white background */
   color: white; /* White text color */
-  padding: 0.6rem 1.25rem; /* Reduced padding */
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
   border-radius: 9999px; /* Fully rounded corners (pill shape) */
   font-weight: 600; /* Semi-bold text */
   cursor: pointer; /* Hand cursor on hover */
   transition: all 0.2s ease; /* Smooth transitions for hover effects */
-  margin: 1.5rem auto; /* Reduced space above and below, centered horizontally */
+  margin: 1rem auto; /* Space above and below, centered horizontally */
   display: block; /* Block level element */
   width: fit-content; /* Only as wide as needed for content */
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.25),
     0 1px 2px rgba(0, 0, 0, 0.3);
   border: none;
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive font size */
+  min-height: 44px; /* Touch-friendly minimum height */
+  min-width: clamp(100px, 25vw, 140px); /* Responsive minimum width */
 }
 
 /* Hover effect for leaderboard toggle button */
@@ -140,9 +148,6 @@
     0.25
   ); /* Slightly more visible background on hover */
   transform: scale(1.05); /* Move up slightly on hover */
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* No questions error state */
@@ -154,12 +159,12 @@
     0.1
   ); /* Semi-transparent white background */
   border-radius: 1rem; /* Rounded corners */
-  padding: 1.5rem 1rem; /* Reduced padding */
+  padding: clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
   text-align: center; /* Center text */
   color: white; /* White text color */
-  margin: 1.5rem 0; /* Reduced space above and below */
+  margin: 1rem 0; /* Space above and below */
   width: 100%; /* Take full width */
-  max-width: 600px; /* Limit maximum width */
+  max-width: min(600px, 100% - 1rem); /* Responsive maximum width */
   box-sizing: border-box; /* Include padding in width calculation */
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.3),
@@ -168,25 +173,28 @@
 
 /* No questions error message */
 .no-questions p {
-  margin-bottom: 1.25rem; /* Reduced space below text */
-  font-size: 1rem; /* Smaller font size */
+  margin-bottom: 1rem; /* Space below text */
+  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  line-height: 1.5;
 }
 
 /* Cancel quiz button */
 .cancel-quiz-btn {
-  margin: 1.25rem auto 0; /* Reduced margin */
-  padding: 0.6rem 1.25rem; /* Reduced padding */
+  margin: 1rem auto 0; /* Space above button, centered */
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
   background-color: rgba(239, 68, 68, 0.9); /* More solid red background */
   color: white; /* White text color */
   border: none;
   border-radius: 9999px; /* Fully rounded corners (pill shape) */
   font-weight: 700; /* Bold text */
-  font-size: 0.9rem; /* Smaller text */
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive font size */
   cursor: pointer; /* Hand cursor on hover */
   transition: all 0.2s ease; /* Smooth transitions for hover effects */
   display: block; /* Block element for proper centering */
-  max-width: 140px; /* Limit maximum width */
+  max-width: min(140px, 90vw); /* Responsive maximum width */
   text-align: center; /* Center text */
+  min-height: 44px; /* Touch-friendly minimum height */
+  min-width: clamp(100px, 25vw, 140px); /* Responsive minimum width */
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.25),
     0 1px 2px rgba(0, 0, 0, 0.3);
@@ -197,9 +205,6 @@
 .cancel-quiz-btn:hover {
   background-color: #ef4444; /* Solid red background on hover */
   transform: scale(1.05); /* Move up slightly on hover */
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Active state for cancel button */
@@ -210,70 +215,79 @@
 
 /* Make the user info section more prominent */
 .quiz-user {
-  margin-bottom: 1rem; /* Reduced space below user info */
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-  padding: 0.75rem 1.5rem; /* Reduced padding */
+  margin-bottom: 1rem; /* Space below user info */
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
   border-radius: 1rem; /* Rounded corners */
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.3),
-    0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
   width: 100%; /* Take full width */
-  max-width: 600px; /* Limit maximum width */
+  max-width: min(600px, 100% - 1rem); /* Responsive maximum width */
   box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Improve quiz progress styling */
 .quiz-progress {
   width: 100%; /* Take full width */
-  max-width: 600px; /* Limit maximum width */
-  margin: 0 auto 1rem; /* Reduced bottom margin */
+  max-width: min(600px, 100% - 1rem); /* Responsive maximum width */
+  margin: 0 auto 1rem; /* Bottom margin */
   box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Tablet-specific adjustments */
+@media (max-width: 768px) {
+  .quiz-page {
+    padding: 0.75rem; /* Increased padding for tablets */
+  }
+
+  .quiz-content {
+    max-width: 100%;
+  }
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 480px) {
   .quiz-page {
-    padding: 0.75rem 0.75rem; /* Increased horizontal padding */
+    padding: 0.5rem; /* Smaller padding for mobile */
   }
 
   .quiz-content {
-    padding: 0 0.75rem; /* Increased horizontal padding */
-    max-width: calc(100% - 1.5rem); /* Account for padding */
-  }
-
-  .spinner {
-    width: 36px; /* Even smaller spinner */
-    height: 36px;
+    padding: 0;
+    max-width: 100%;
   }
 
   .error-container,
   .no-questions {
-    padding: 1.25rem 0.75rem; /* Further reduced padding */
-    margin: 1rem 0.5rem; /* Added horizontal margin */
-    max-width: calc(100% - 1rem); /* Account for margins */
-  }
-
-  .leaderboard-toggle-btn {
-    padding: 0.5rem 1rem; /* Smaller padding */
-    font-size: 0.9rem; /* Smaller font */
-    margin: 1.25rem auto; /* Reduced margin */
-  }
-
-  .cancel-quiz-btn {
-    max-width: 130px; /* Slightly narrower */
-    padding: 0.5rem 1rem; /* Smaller padding */
-    font-size: 0.85rem; /* Smaller font */
+    margin: 0.75rem 0; /* Reduced margins on mobile */
+    max-width: 100%;
   }
 
   .quiz-user {
-    padding: 0.5rem 1rem; /* Smaller padding */
-    margin: 0 0.5rem 1rem 0.5rem; /* Added horizontal margins */
-    max-width: calc(100% - 1rem); /* Account for margins */
+    margin: 0 0 1rem 0; /* Remove horizontal margins on mobile */
+    max-width: 100%;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1024px) {
+  .quiz-page {
+    padding: 1.5rem; /* Increased padding for large screens */
   }
 
-  /* Prevent fixed elements from causing overflow */
-  .footer {
-    position: relative; /* Ensure footer doesn't cause overflow */
-    padding: 0.75rem; /* Reduced padding */
+  .quiz-content {
+    max-width: 750px; /* Larger content area on big screens */
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-height: 600px) and (orientation: landscape) {
+  .quiz-page {
+    padding: 0.25rem; /* Minimal padding in landscape */
+  }
+
+  .loading-container {
+    min-height: 150px; /* Reduced height in landscape */
+  }
+
+  .error-container,
+  .no-questions {
+    padding: 0.75rem 1rem; /* Reduced padding in landscape */
   }
 }
