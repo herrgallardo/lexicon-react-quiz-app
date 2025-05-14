@@ -31,6 +31,17 @@ const Header = () => {
     navigate('/login');
   };
 
+  // Create the logout button component once
+  const LogoutButton = ({ className, inNav = false }) => (
+    <button
+      className={`logout-btn ${className}`}
+      onClick={openLogoutModal}
+      aria-label="Log out"
+    >
+      <FontAwesomeIcon icon={faSignOutAlt} />
+    </button>
+  );
+
   return (
     <header className="header">
       <div className="header-content">
@@ -70,15 +81,10 @@ const Header = () => {
               About
             </a>
           </li>
+          {/* Mobile logout - always render if user exists, CSS handles visibility */}
           {user && (
-            <li className="nav-item">
-              <button
-                className="logout-btn mobile"
-                onClick={openLogoutModal}
-                aria-label="Log out"
-              >
-                <FontAwesomeIcon icon={faSignOutAlt} />
-              </button>
+            <li className="nav-item mobile-logout-item">
+              <LogoutButton className="mobile-logout" inNav={true} />
             </li>
           )}
         </ul>
@@ -96,16 +102,8 @@ const Header = () => {
             <span className="bar" />
           </button>
 
-          {/* Desktop logout */}
-          {user && (
-            <button
-              className="logout-btn desktop"
-              onClick={openLogoutModal}
-              aria-label="Log out"
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} />
-            </button>
-          )}
+          {/* Desktop logout - always render if user exists, CSS handles visibility */}
+          {user && <LogoutButton className="desktop-logout" />}
         </div>
 
         <ConfirmationModal
