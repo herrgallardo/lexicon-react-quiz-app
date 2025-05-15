@@ -178,31 +178,6 @@
   }
 }
 
-/* Styling for feedback text (correct/incorrect message) */
-.feedback-text {
-  text-align: center;
-  font-size: clamp(1rem, 3vw, 1.3rem); /* Responsive font size */
-  font-weight: 700;
-  padding: clamp(0.4rem, 1.5vw, 0.6rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
-  border-radius: 9999px;
-  margin-bottom: clamp(0.75rem, 3vw, 1.25rem); /* Responsive margin */
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    0 4px 6px rgba(0, 0, 0, 0.2); /* Sharper, more defined shadow */
-}
-
-/* Styling for correct answer feedback */
-.correct-feedback {
-  color: white;
-  background-color: #10b981;
-}
-
-/* Styling for incorrect answer feedback */
-.incorrect-feedback {
-  color: white;
-  background-color: #ef4444;
-}
-
 /* Next question button styling */
 .next-question-btn {
   display: flex;

@@ -4,7 +4,6 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizLayout from '../components/QuizLayout';
-import QuizUserInfo from '../components/QuizUserInfo';
 import QuizSetup from '../components/QuizSetup';
 import QuestionCard from '../components/QuestionCard';
 import QuizProgress from '../components/QuizProgress';
@@ -325,9 +324,6 @@ const Quiz = () => {
   return (
     <QuizLayout>
       <div className="quiz-page">
-        {/* User information section - always displayed */}
-        <QuizUserInfo user={user} />
-
         {/* Main quiz content area - changes based on quiz state */}
         <div className="quiz-content">
           {!quizStarted ? (
