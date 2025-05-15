@@ -1,10 +1,3 @@
-// src/components/Leaderboard.jsx
-// --------------------------------------------------
-// Displays the top 10 quiz scores from Firestore
-// Sorted in descending order by score
-// Includes a formatted timestamp of when each score was saved
-// --------------------------------------------------
-
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, limit, query } from 'firebase/firestore';
 import { db } from '../firebase/firebaseInit';
@@ -24,13 +17,13 @@ const Leaderboard = () => {
         );
         const querySnapshot = await getDocs(q);
 
-        // Map Firestore docs to usable data (including timestamp)
+        // Map Firestore-dokument till användbar data
         const scores = querySnapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             ...data,
             id: doc.id,
-            timestamp: data.createdAt?.toDate?.(), // Convert Firestore Timestamp → JS Date
+            timestamp: data.createdAt?.toDate?.(), // Konvertera Firestore Timestamp till JS Date
           };
         });
 
@@ -45,6 +38,14 @@ const Leaderboard = () => {
     fetchTopScores();
   }, []);
 
+  // Hjälpfunktion för att extrahera användarnamnet
+  const getUsername = (displayName, email) => {
+    if (displayName) {
+      return displayName;
+    }
+    return email ? email.split('@')[0] : '';
+  };
+
   return (
     <div className="leaderboard">
       <h2>Top 10 Scores</h2>
@@ -54,12 +55,10 @@ const Leaderboard = () => {
         <ol className="leaderboard-list">
           {topScores.map((entry, index) => (
             <li key={entry.id || index}>
-              <strong>{entry.displayName || entry.email}</strong> —{' '}
-              {entry.score} pts
+              <strong>{getUsername(entry.displayName, entry.email)}</strong> - {entry.score} pts
               {entry.timestamp && (
                 <div className="score-timestamp">
-                  {entry.timestamp.toLocaleDateString()}{' '}
-                  {entry.timestamp.toLocaleTimeString()}
+                  {entry.timestamp.toLocaleDateString()} {entry.timestamp.toLocaleTimeString()}
                 </div>
               )}
             </li>

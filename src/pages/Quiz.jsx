@@ -367,6 +367,7 @@ const Quiz = () => {
                 totalQuestions={questions.length}
                 onPlayAgain={handlePlayAgain}
                 onNewQuiz={handleNewQuiz}
+                user={user}
               />
               <button
                 className="leaderboard-toggle-btn"

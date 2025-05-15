@@ -71,11 +71,9 @@ const Home = () => {
             <span>Play Now</span>
             <span className="play-arrow">→</span>
           </button>
-          <p className="auth-hint">
-            {authInitialized &&
-              (user
-                ? `Welcome back, ${user.displayName || user.email}!`
-                : 'Sign in to save your scores and track progress')}
+          <p className="welcome-text">
+            Welcome back,{' '}
+            {user && user.email ? user.email.split('@')[0] : 'Guest'}!
           </p>
         </div>
       </div>

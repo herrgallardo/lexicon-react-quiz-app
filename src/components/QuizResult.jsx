@@ -5,40 +5,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy, faRedo, faCog } from '@fortawesome/free-solid-svg-icons';
 import './QuizResult.css';
 
-const QuizResult = ({ score, totalQuestions, onPlayAgain, onNewQuiz }) => {
+const QuizResult = ({ score, totalQuestions, onPlayAgain, onNewQuiz, user }) => {
   // Calculate the percentage score and round to nearest integer
-  // For example, 7 correct out of 10 questions = 70%
   const percentage = Math.round((score / totalQuestions) * 100);
 
   // Determine performance level text and CSS class based on percentage score
-  // This sets encouraging messages based on how well the user did
   let performanceText = '';
   let performanceClass = '';
 
-  // Assign different messages and classes based on score ranges
   if (percentage >= 90) {
-    // 90-100% score
     performanceText = 'Outstanding!';
     performanceClass = 'outstanding';
   } else if (percentage >= 70) {
-    // 70-89% score
     performanceText = 'Great job!';
     performanceClass = 'great';
   } else if (percentage >= 50) {
-    // 50-69% score
     performanceText = 'Good effort!';
     performanceClass = 'good';
   } else {
-    // Below 50% score
     performanceText = 'Keep practicing!';
     performanceClass = 'practice';
   }
+
+  // Plocka namn från email
+  const username = user && user.email ? user.email.split('@')[0] : "Guest";
 
   return (
     <div className="quiz-result">
       {/* Trophy icon at top of results */}
       <div className="result-trophy">
         <FontAwesomeIcon icon={faTrophy} />
+      </div>
+
+      {/* Visa användarnamn */}
+      <div className="result-username">
+        {username}
       </div>
 
       {/* Performance message with dynamic class for color styling */}
@@ -61,12 +62,9 @@ const QuizResult = ({ score, totalQuestions, onPlayAgain, onNewQuiz }) => {
 
       {/* Action buttons for continuing */}
       <div className="action-buttons">
-        {/* Play again button - uses same quiz settings */}
         <button onClick={onPlayAgain} className="play-again-btn">
           <FontAwesomeIcon icon={faRedo} /> Play Again
         </button>
-
-        {/* New quiz button - returns to quiz setup screen */}
         <button onClick={onNewQuiz} className="new-quiz-btn">
           <FontAwesomeIcon icon={faCog} /> New Quiz
         </button>
