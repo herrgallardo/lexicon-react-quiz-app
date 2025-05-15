@@ -14,6 +14,7 @@ import { useQuiz } from '../hooks/useTriviaHooks';
 import { AuthContext } from '../context/AuthContext';
 import { saveScore, getTopScores } from '../services/firestoreService';
 import './Quiz.css';
+import QuizTimer from '../components/QuizTimer';
 
 // Storage key for saving quiz state to localStorage
 const QUIZ_STATE_KEY = 'lexicon_quiz_state';
@@ -379,7 +380,13 @@ const Quiz = () => {
           ) : hasValidQuestion ? (
             // ACTIVE QUIZ SCREEN
             // Shown during the quiz when questions are available
+
             <>
+              <QuizTimer
+                duration={30}
+                onTimeUp={() => handleAnswer(null)}
+                keyTrigger={currentIndex}
+              />
               <QuizProgress
                 currentIndex={currentIndex}
                 totalQuestions={questions.length}

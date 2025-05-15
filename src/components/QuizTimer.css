@@ -1,0 +1,113 @@
+/* === Quiz Timer Styles === */
+
+.quiz-timer {
+  width: 100%;
+  max-width: 420px;
+  margin: 20px auto;
+  padding: 12px 16px;
+  border-radius: 16px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.timer-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+/* === Progress Bar === */
+
+.progress-bar-container {
+  width: 100%;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #4ce1b6, #4a90e2);
+  border-radius: 20px;
+  transition: width 0.95s linear, background 0.5s ease;
+}
+
+/* === Warning States === */
+
+/* Medium warning (under 50%) */
+.quiz-timer.warning .timer-text {
+  color: #ffcc00;
+}
+
+.quiz-timer.warning .progress-bar {
+  background: linear-gradient(to right, #ffcc00, #ff9500);
+}
+
+/* Critical (under 20%) */
+.quiz-timer.warning[data-critical="true"] .timer-text {
+  color: #ff3b30;
+  animation: gentle-pulse 1.5s infinite;
+}
+
+.quiz-timer.warning[data-critical="true"] .progress-bar {
+  background: linear-gradient(to right, #ff9500, #ff3b30);
+}
+
+/* Final countdown (last 5 seconds) */
+.quiz-timer.warning[data-final="true"] .timer-text {
+  font-size: 1.25rem;
+  color: #ff3b30;
+  animation: final-countdown 0.7s infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes final-countdown {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* === Light/Dark Theme Support === */
+@media (prefers-color-scheme: dark) {
+  .timer-text {
+    color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .quiz-timer {
+    padding: 10px 14px;
+  }
+
+  .timer-text {
+    font-size: 1rem;
+  }
+
+  .progress-bar-container {
+    height: 10px;
+  }
+}
+
+/* === Accessibility - Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .quiz-timer.warning .timer-text,
+  .quiz-timer.warning[data-critical="true"] .timer-text,
+  .quiz-timer.warning[data-final="true"] .timer-text {
+    animation: none;
+  }
+
+  .progress-bar {
+    transition: width 0.5s linear, background 0.3s ease;
+  }
+}
