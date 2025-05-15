@@ -5,24 +5,27 @@ import UserProfileModal from './UserProfileModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import './Header.css';
- 
+
 const Header = () => {
   const { user } = useContext(AuthContext);
   const isDesktop = useMediaQuery('(min-width: 769px)');
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
- 
+
   // auto-close mobile menu when switching to desktop
   useEffect(() => {
     if (isDesktop) {
       setMenuOpen(false);
     }
   }, [isDesktop]);
- 
+
   const toggleMenu = () => setMenuOpen((open) => !open);
-  const openUserModal = () => setShowUserModal(true);
+  const openUserModal = () => {
+    setShowUserModal(true);
+    setMenuOpen(false); // Close mobile menu when opening modal
+  };
   const closeUserModal = () => setShowUserModal(false);
- 
+
   // Get display name or fallback to email username part
   const getDisplayName = () => {
     if (user?.displayName) {
@@ -34,7 +37,7 @@ const Header = () => {
     }
     return 'Guest';
   };
- 
+
   return (
     <header className="header">
       <div className="header-content">
@@ -43,8 +46,28 @@ const Header = () => {
             <img src="/images/logo.png" alt="Quizify Logo" />
           </a>
         </div>
- 
+
         <ul className={`nav-list${menuOpen ? ' active' : ''}`}>
+          {/* User info in mobile menu - only show when menu is active and not on desktop */}
+          {!isDesktop && (
+            <li className="nav-item mobile-user-info">
+              <div
+                className="nav-user-info"
+                onClick={user ? openUserModal : undefined}
+                style={{ cursor: user ? 'pointer' : 'default' }}
+              >
+                <FontAwesomeIcon
+                  icon={faUserCircle}
+                  className="nav-user-icon"
+                />
+                <span>{user ? getDisplayName() : 'Hello Guest!'}</span>
+                {user && (
+                  <span className="nav-user-subtitle">View Profile</span>
+                )}
+              </div>
+            </li>
+          )}
+
           <li className="nav-item">
             <a
               href="/"
@@ -73,7 +96,7 @@ const Header = () => {
             </a>
           </li>
         </ul>
- 
+
         <div className="actions">
           <button
             className="hamburger"
@@ -84,8 +107,8 @@ const Header = () => {
             <span className="bar" />
             <span className="bar" />
           </button>
- 
-          {/* ───────── USER INFO ───────── */}
+
+          {/* ───────── USER INFO - Desktop only ───────── */}
           {user ? (
             <div
               className="user-info desktop"
@@ -103,14 +126,12 @@ const Header = () => {
             </div>
           )}
         </div>
- 
+
         {/* ✅ User profile modal */}
         {showUserModal && <UserProfileModal onClose={closeUserModal} />}
       </div>
     </header>
   );
 };
- 
+
 export default Header;
- 
- 
