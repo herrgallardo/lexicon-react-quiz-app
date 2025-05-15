@@ -74,43 +74,47 @@
   font-size: 2.5rem; /* Very large font size */
   margin-bottom: 1.5rem; /* Space below title */
   font-weight: 800; /* Extra bold text */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.7
-  ); /* Semi-transparent white background */
-  padding: 0.5rem 1rem; /* Space around title for contrast */
-  border-radius: 0.5rem; /* Rounded corners for background */
+  /* Remove the white background completely */
+  text-align: center;
+  /* Add a strong text shadow for readability against gradient background */
+  text-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.6);
+  /* Add a subtle outline for extra contrast */
+  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.3);
 }
 
-/* Different colors for different performance levels */
+/* Different colors for different performance levels - clean shadows only */
 .result-title.outstanding {
   color: #10b981; /* Green color for top scores */
+  /* Keep the same shadow as the base for consistency */
   text-shadow:
-    0 0 10px rgba(16, 185, 129, 0.7),
-    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .result-title.great {
   color: #3b82f6; /* Blue color for good scores */
+  /* Keep the same shadow as the base for consistency */
   text-shadow:
-    0 0 10px rgba(59, 130, 246, 0.7),
-    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .result-title.good {
   color: #f59e0b; /* Orange color for average scores */
+  /* Keep the same shadow as the base for consistency */
   text-shadow:
-    0 0 10px rgba(245, 158, 11, 0.7),
-    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .result-title.practice {
   color: #ef4444; /* Red color for low scores */
+  /* Keep the same shadow as the base for consistency */
   text-shadow:
-    0 0 10px rgba(239, 68, 68, 0.7),
-    0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced glow */
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 /* Container for score information */
@@ -229,8 +233,23 @@
   }
 
   .result-title {
-    font-size: 2rem; /* Smaller heading */
+    font-size: 2rem; /* Smaller heading on mobile */
     margin-bottom: 1.25rem; /* Less space below */
+    /* Slightly reduced effects for mobile performance */
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Reduce glow effects on mobile for performance */
+  .result-title.outstanding,
+  .result-title.great,
+  .result-title.good,
+  .result-title.practice {
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(0, 0, 0, 0.7),
+      0 0 15px currentColor;
   }
 
   .percent-value {
