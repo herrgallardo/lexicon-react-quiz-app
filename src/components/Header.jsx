@@ -3,33 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
 import ConfirmationModal from './ConfirmationModal';
+import useMediaQuery from '../hooks/useMediaQuery'; // ← new
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './Header.css';
 
 const Header = () => {
   const { user } = useContext(AuthContext);
+  const isDesktop = useMediaQuery('(min-width: 769px)');
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
-  // close mobile menu when switching to desktop
+  // auto-close mobile menu when switching to desktop
   useEffect(() => {
-    // ——— SSR, Test-env & feature-detect guard ———
-    // In Node (SSR) there is no window; in Jest’s JSDOM, matchMedia isn’t implemented;
-    // older browsers may also lack matchMedia. Bail out early to prevent test failures
-    // and runtime errors.
-    if (typeof window === 'undefined' || !window.matchMedia) {
-      return;
+    if (isDesktop) {
+      setMenuOpen(false);
     }
-
-    const mq = window.matchMedia('(min-width: 769px)');
-    const handler = (e) => {
-      if (e.matches) setMenuOpen(false);
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+  }, [isDesktop]);
 
   const toggleMenu = () => setMenuOpen((open) => !open);
   const openLogoutModal = () => setShowLogoutModal(true);
@@ -39,8 +30,7 @@ const Header = () => {
     navigate('/login');
   };
 
-  // Create the logout button component once
-  const LogoutButton = ({ className, inNav = false }) => (
+  const LogoutButton = ({ className }) => (
     <button
       className={`logout-btn ${className}`}
       onClick={openLogoutModal}
@@ -53,14 +43,12 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-content">
-        {/* Logo positioned absolutely */}
         <div className="logo">
           <a href="/">
             <img src="/images/logo.png" alt="Quizify Logo" />
           </a>
         </div>
 
-        {/* Navigation centered in grid */}
         <ul className={`nav-list${menuOpen ? ' active' : ''}`}>
           <li className="nav-item">
             <a
@@ -89,17 +77,14 @@ const Header = () => {
               About
             </a>
           </li>
-          {/* Mobile logout - always render if user exists, CSS handles visibility */}
           {user && (
             <li className="nav-item mobile-logout-item">
-              <LogoutButton className="mobile-logout" inNav={true} />
+              <LogoutButton className="mobile-logout" />
             </li>
           )}
         </ul>
 
-        {/* Actions on the right */}
         <div className="actions">
-          {/* Hamburger for mobile */}
           <button
             className="hamburger"
             onClick={toggleMenu}
@@ -109,8 +94,6 @@ const Header = () => {
             <span className="bar" />
             <span className="bar" />
           </button>
-
-          {/* Desktop logout - always render if user exists, CSS handles visibility */}
           {user && <LogoutButton className="desktop-logout" />}
         </div>
 

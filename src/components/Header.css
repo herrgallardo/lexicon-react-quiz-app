@@ -17,7 +17,6 @@
   position: relative;
 }
 
-/* Logo positioned absolutely to not affect grid layout */
 .logo {
   position: absolute;
   left: 2rem;
@@ -33,7 +32,6 @@
   display: block;
 }
 
-/* Navigation in the center grid cell */
 .nav-list {
   display: none;
   list-style: none;
@@ -72,7 +70,6 @@
   color: #e0e0ff;
 }
 
-/* Actions in the right grid cell */
 .actions {
   display: flex;
   align-items: center;
@@ -81,7 +78,6 @@
   justify-self: end;
 }
 
-/* Base logout button styles */
 .logout-btn {
   width: 2.5rem;
   height: 2.5rem;
@@ -101,14 +97,12 @@
   background-color: #f0f0f5;
 }
 
-/* Mobile logout button - visible on mobile, hidden on desktop */
 .mobile-logout-item {
   display: block;
 }
 
-/* Desktop logout button - hidden on mobile, visible on desktop */
 .desktop-logout {
-  display: none; /* Hidden by default on mobile */
+  display: none;
 }
 
 .hamburger {
@@ -126,7 +120,6 @@
   background-color: #fff;
 }
 
-/* Desktop styles - 769px and above */
 @media (min-width: 769px) {
   .nav-list {
     display: flex;
@@ -148,12 +141,10 @@
     margin-left: 2rem;
   }
 
-  /* Hide mobile logout */
   .mobile-logout-item {
     display: none;
   }
 
-  /* Show desktop logout */
   .desktop-logout {
     display: flex;
   }
