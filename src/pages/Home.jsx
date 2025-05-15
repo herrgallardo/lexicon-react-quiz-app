@@ -2,11 +2,23 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Home.css';
-
+ 
 const Home = () => {
   const { user, authInitialized } = useContext(AuthContext);
   const navigate = useNavigate();
-
+ 
+  // Function to get display name consistent with other components
+  const getDisplayName = () => {
+    if (user?.displayName) {
+      return user.displayName;
+    }
+    // If no display name, extract username from email
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return 'Guest';
+  };
+ 
   // Handle navigation based on auth state
   const handlePlayNow = () => {
     if (user) {
@@ -17,7 +29,7 @@ const Home = () => {
       navigate('/login');
     }
   };
-
+ 
   return (
     <div className="home-page">
       <div className="home-container">
@@ -28,7 +40,7 @@ const Home = () => {
             Test your knowledge with our interactive quiz platform
           </p>
         </div>
-
+ 
         {/* Description Section */}
         <div className="description-section">
           <div className="feature-grid">
@@ -40,20 +52,20 @@ const Home = () => {
                 levels
               </p>
             </div>
-
+ 
             <div className="feature-card">
               <div className="feature-icon">🏆</div>
               <h3>Track Your Progress</h3>
               <p>See your scores and compete with others on the leaderboard</p>
             </div>
-
+ 
             <div className="feature-card">
               <div className="feature-icon">⚡</div>
               <h3>Instant Feedback</h3>
               <p>Get immediate results and learn from your answers</p>
             </div>
           </div>
-
+ 
           <div className="game-info">
             <h2>How to Play</h2>
             <ul className="info-list">
@@ -64,7 +76,7 @@ const Home = () => {
             </ul>
           </div>
         </div>
-
+ 
         {/* Call to Action */}
         <div className="cta-section">
           <button className="play-now-btn" onClick={handlePlayNow}>
@@ -74,7 +86,7 @@ const Home = () => {
           <p className="auth-hint">
             {authInitialized &&
               (user
-                ? `Welcome back, ${user.displayName || user.email}!`
+                ? `Welcome back, ${getDisplayName()}!`
                 : 'Sign in to save your scores and track progress')}
           </p>
         </div>
@@ -82,5 +94,5 @@ const Home = () => {
     </div>
   );
 };
-
+ 
 export default Home;

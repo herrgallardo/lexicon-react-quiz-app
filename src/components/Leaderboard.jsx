@@ -45,6 +45,20 @@ const Leaderboard = () => {
     fetchTopScores();
   }, []);
 
+  // Function to get display name, similar to Header component
+  const getDisplayName = (entry) => {
+    // If displayName exists, use it
+    if (entry.displayName && entry.displayName.trim()) {
+      return entry.displayName;
+    }
+    // If no display name but has email, extract username part
+    if (entry.email) {
+      return entry.email.split('@')[0];
+    }
+    // Fallback to 'Anonymous User'
+    return 'Anonymous User';
+  };
+
   return (
     <div className="leaderboard">
       <h2>Top 10 Scores</h2>
@@ -54,8 +68,7 @@ const Leaderboard = () => {
         <ol className="leaderboard-list">
           {topScores.map((entry, index) => (
             <li key={entry.id || index}>
-              <strong>{entry.displayName || entry.email}</strong> —{' '}
-              {entry.score} pts
+              <strong>{getDisplayName(entry)}</strong> — {entry.score} pts
               {entry.timestamp && (
                 <div className="score-timestamp">
                   {entry.timestamp.toLocaleDateString()}{' '}
