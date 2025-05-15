@@ -1,0 +1,125 @@
+/* src/components/LoginMsgModal.css */
+
+.login-msg-overlay {
+  /* ... (rest of your overlay styles) ... */
+ position: fixed; /* Fixed position covers entire viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.65
+  ); /* Slightly darker background for better focus */
+  display: flex; /* Center the modal container */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 9999; /* Extremely high z-index to ensure it's above everything */
+  animation: fadeIn 0.2s ease-out; /* Fade in animation */
+  backdrop-filter: blur(8px); /* Stronger blur effect for background */
+}
+
+/* Animation for fade-in effect when modal appears */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  } /* Start completely transparent */
+  to {
+    opacity: 1;
+  } /* End fully visible */
+}
+
+.login-msg-box {
+  /* ... (rest of your box styles) ... */
+  background: #2e2f85;
+  color: #fff; /* This color will be inherited by children unless overridden */
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  width: 90%;
+  max-width: 420px;
+  transition: transform 0.3s ease;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+/* Animation for slide-up effect when modal appears */
+@keyframes slideUp {
+  from {
+    transform: translateY(30px); /* Start 30px below final position */
+    opacity: 0; /* Start completely transparent */
+  }
+  to {
+    transform: translateY(0); /* End at final position */
+    opacity: 1; /* End fully visible */
+  }
+}
+
+/* Make sure the modal is visible in all browsers that might not support backdrop-filter */
+@supports not (backdrop-filter: blur(8px)) {
+  .modal-overlay {
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.8
+    ); /* Darker fallback if blur not supported */
+  }
+}
+
+
+/* Optional heading style */
+
+/* Style for the message text using the new class name */
+.login-msg-text {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  color: #e0e0f0; /* Specific color for the text */
+}
+
+/* Container for action buttons - class name matches JSX */
+.login-msg-box-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Style for the close button using the original class name */
+.close-btn {
+  background-color: #ef4444;
+  border: none;
+  padding: 0.7rem 1.6rem;
+  color: #fff; /* Button text color */
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 79, 90, 0.4);
+  outline: none;
+}
+
+.close-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+.close-btn:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
