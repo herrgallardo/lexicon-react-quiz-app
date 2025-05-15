@@ -1,236 +1,356 @@
+/* Main page container with full height and gradient background */
 .about-page {
-  min-height: 100vh;
-  background: #a855f7; /* Light purple - change to #3b82f6 for blue */
-  padding: 2rem 0;
-  box-sizing: border-box;
-}
-
-/* Main container for the About page */
-.about-container {
+  min-height: 100vh; /* Full viewport height */
   background: linear-gradient(
     135deg,
     #4e54c8,
     #8f94fb
-  ); /* Gradient background */
-  color: rgb(255, 255, 255); /* White text for contrast */
-  padding: 2rem; /* Adds spacing inside the container */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-  max-width: 1200px; /* Limits the maximum width */
-  margin: 2rem auto; /* Centers the container */
-  text-align: center; /* Centers text inside */
+  ); /* Purple gradient matching app theme */
+  padding: 2rem 1rem; /* Vertical and horizontal padding */
+  box-sizing: border-box; /* Include padding in width calculations */
+  display: flex; /* Flexbox for centering content */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 }
 
-/* Headings */
-.about-container h1,
+/* Main content container */
+.about-container {
+  color: white; /* White text color */
+  padding: 3rem 2rem; /* Internal spacing */
+  max-width: 1200px; /* Maximum width constraint */
+  width: 100%; /* Full width up to max-width */
+  text-align: center; /* Center align all text */
+  animation: fadeInUp 0.8s ease-out; /* Smooth entrance animation */
+}
+
+/* Fade-in animation from bottom to top */
+@keyframes fadeInUp {
+  from {
+    opacity: 0; /* Start invisible */
+    transform: translateY(30px); /* Start 30px below final position */
+  }
+  to {
+    opacity: 1; /* End fully visible */
+    transform: translateY(0); /* End at final position */
+  }
+}
+
+/* Main page title styling */
+.about-container h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
+  font-weight: 800; /* Extra bold weight */
+  margin-bottom: 1.5rem; /* Space below title */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow for depth */
+}
+
+/* Section heading styling */
 .about-container h2 {
-  margin-bottom: 1.5rem; /* Adds space below each heading */
-  font-weight: bold; /* Makes text bold */
+  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive heading size */
+  font-weight: 700; /* Bold weight */
+  margin-bottom: 2rem; /* Space below heading */
+  margin-top: 4rem; /* Large space above for section separation */
 }
 
-/* Paragraphs */
+/* First h2 has reduced top margin */
+.about-container h2:first-of-type {
+  margin-top: 2rem; /* Less space for first section heading */
+}
+
+/* Paragraph text styling */
 .about-container p {
-  margin-bottom: 1.5rem; /* Adds space below paragraphs */
-  line-height: 1.6; /* Improves text readability */
-  font-size: 1.1rem; /* Sets font size */
+  margin-bottom: 1.5rem; /* Space below paragraphs */
+  line-height: 1.7; /* Increased line height for readability */
+  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Responsive text size */
+  color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
 }
 
-/* Add more air between major sections */
-.about-container h2:not(:first-of-type) {
-  margin-top: 4rem; /* Add more space above section headings */
-}
-
-/* Grid layout for the team section */
+/* Grid layout for team member cards */
 .team-container {
-  display: grid; /* Uses grid layout */
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(200px, 1fr)
-  ); /* Responsive grid */
-  gap: 2rem; /* Adds space between grid items */
-  margin-top: 2rem; /* Adds space above the grid */
-  margin-bottom: 3rem; /* Add space below the team section */
+  display: grid; /* CSS Grid layout */
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns on large screens */
+  gap: 2rem; /* Space between grid items */
+  margin: 3rem 0; /* Vertical spacing around team section */
 }
 
-/* Individual team cards */
+/* Individual team member card styling */
 .team-member {
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-  border-radius: 10px; /* Rounded corners */
-  padding: 1.5rem; /* Adds spacing inside the card */
-  text-align: center; /* Centers text */
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease; /* Smooth hover effect */
-  display: flex; /* Use flexbox */
+  background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
+  border-radius: 1.5rem; /* Rounded corners */
+  padding: 2rem 1.5rem; /* Internal padding */
+  text-align: center; /* Center align content */
+  transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  display: flex; /* Flexbox for vertical layout */
   flex-direction: column; /* Stack items vertically */
   align-items: center; /* Center items horizontally */
-  min-height: 300px; /* Set minimum height for all cards */
-  justify-content: space-between; /* Distribute space between items */
+  min-height: 320px; /* Minimum height for consistent card size */
+  justify-content: space-between; /* Distribute space evenly */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
 }
 
-/* Hover effect for team cards */
+/* Hover effect for team member cards */
 .team-member:hover {
-  transform: scale(1.05); /* Enlarges the card slightly on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow */
+  transform: translateY(-8px); /* Lift effect on hover */
+  background: rgba(255, 255, 255, 0.15); /* Slightly more opaque background */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Enhanced shadow for depth */
 }
 
-/* Images inside team cards */
+/* Team member profile images */
 .team-member img {
-  width: 100px; /* Sets image width */
-  height: 100px; /* Sets image height */
-  border-radius: 50%; /* Makes the image circular */
-  margin-bottom: 1rem; /* Adds space below the image */
-  border: 2px solid white; /* White border around the image */
-  transition: transform 0.3s ease; /* Smooth scaling effect */
+  width: 120px; /* Fixed width */
+  height: 120px; /* Fixed height (square) */
+  border-radius: 50%; /* Make image circular */
+  margin-bottom: 1.5rem; /* Space below image */
+  border: 3px solid rgba(255, 255, 255, 0.3); /* White border around image */
+  transition: all 0.3s ease; /* Smooth hover transitions */
+  object-fit: cover; /* Maintain aspect ratio while filling circle */
 }
 
-/* Zoom effect on image when hovered */
+/* Image hover effect */
 .team-member:hover img {
-  transform: scale(1.3); /* Slightly enlarges the image */
+  transform: scale(1.1); /* Slight zoom on hover */
+  border-color: rgba(255, 255, 255, 0.6); /* Brighter border on hover */
 }
 
-/* Information inside team cards */
+/* Container for member name and description */
 .member-info {
-  flex-grow: 1; /* Take up available space */
-  display: flex;
-  flex-direction: column;
+  flex-grow: 1; /* Take up available vertical space */
+  display: flex; /* Flexbox for content */
+  flex-direction: column; /* Stack name and role vertically */
   justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
 }
 
+/* Team member name styling */
 .member-info h3 {
-  margin-bottom: 1rem; /* Adds space below the name */
-  font-size: 1.2rem; /* Sets font size */
-  font-weight: bold; /* Makes text bold */
+  margin-bottom: 1rem; /* Space below name */
+  font-size: clamp(1.1rem, 3vw, 1.4rem); /* Responsive name size */
+  font-weight: 700; /* Bold weight */
+  color: white; /* Pure white for names */
 }
 
+/* Team member role/description styling */
 .member-info p {
-  margin-bottom: 1rem; /* Adds space below the description */
-  font-size: 1rem; /* Sets font size */
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Responsive role text size */
+  color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+  line-height: 1.5; /* Improved readability */
   flex-grow: 1; /* Take remaining space */
-  display: flex;
+  display: flex; /* Flexbox for centering */
   align-items: center; /* Center text vertically */
-}
-/* GitHub link button */
-.github-link {
-  display: block; /* Makes the button take the entire row */
-  text-align: center; /* Centers the text */
-  margin: 1rem auto 0 auto; /* Creates space above and centers the button */
-  background-color: white; /* White background */
-  color: #4e54c8; /* Purple text */
-  padding: 0.7rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  margin-top: auto; /* Push button to bottom of flex container */
+  text-align: center; /* Center align text */
+  margin-bottom: 1.5rem; /* Space below role text */
 }
 
-/* Hover effect for GitHub button */
+/* GitHub profile link button */
+.github-link {
+  background: white; /* White background to match app buttons */
+  color: #4f46e5; /* Purple text color */
+  padding: 0.75rem 1.5rem; /* Button padding */
+  border-radius: 9999px; /* Fully rounded (pill-shaped) button */
+  font-weight: 600; /* Semi-bold text */
+  text-decoration: none; /* Remove underline */
+  transition: all 0.3s ease; /* Smooth hover transitions */
+  display: inline-flex; /* Inline flexbox for icon + text */
+  align-items: center; /* Center content vertically */
+  gap: 0.5rem; /* Space between icon and text */
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.1); /* Layered shadows for depth */
+  margin-top: auto; /* Push button to bottom of card */
+}
+
+/* GitHub link hover effect */
 .github-link:hover {
-  background-color: #4e54c8; /* Changes background color */
-  color: white; /* Changes text color */
-  transform: scale(1.1); /* Enlarges button on hover */
+  background: #4f46e5; /* Purple background on hover */
+  color: white; /* White text on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 /* Technical overview section styling */
-.about-container .technical-overview {
-  background-color: rgba(
+.technical-overview {
+  background: rgba(
     255,
     255,
     255,
-    0.15
-  ); /* Semi-transparent white background */
-  border-radius: 15px; /* Rounded corners */
-  padding: 2rem; /* Padding inside the section */
-  margin: 3rem 0; /* Margin above and below */
+    0.08
+  ); /* Semi-transparent white background for glassmorphism effect */
+  border-radius: 1.5rem; /* Rounded corners */
+  padding: 2.5rem 2rem; /* Internal padding for content spacing */
+  margin: 3rem 0; /* Vertical spacing above and below */
   text-align: left; /* Left-align for better readability of technical content */
-  max-width: 800px; /* Limit width for better line length */
+  max-width: 1200px; /* Maximum width constraint */
   margin-left: auto; /* Center horizontally */
   margin-right: auto; /* Center horizontally */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for depth and visual separation */
+  transition: all 0.3s ease; /* Smooth transitions for all property changes */
 }
 
-.about-container .technical-overview h2 {
-  text-align: center; /* Keep the heading centered */
-  margin-bottom: 2rem;
-  margin-top: 0; /* Remove top margin since it's handled by the container */
+/* Hover effect for technical overview section */
+.technical-overview:hover {
+  transform: scale(1.02); /* Slight scale increase on hover for interactivity */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* Larger shadow on hover for enhanced depth */
 }
 
-.about-container .technical-overview p {
-  margin-bottom: 1.5rem;
-  line-height: 1.7; /* Slightly increased for better readability */
+/* Technical overview heading */
+.technical-overview h2 {
+  text-align: center; /* Center the section title */
+  margin-bottom: 2rem; /* Space below heading */
+  margin-top: 0; /* Remove default top margin */
+  color: white; /* White color for heading */
 }
 
-.about-container .technical-overview strong {
-  color: #ffffff; /* Ensure bold text is white */
-  font-weight: 700;
+/* Technical overview paragraph text */
+.technical-overview p {
+  margin-bottom: 1.5rem; /* Space below paragraphs */
+  line-height: 1.7; /* Improved readability */
+  color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
 }
 
-/* Styling for the bullet points */
-.about-container .technical-overview br + strong {
-  display: inline-block;
-  margin-top: 0.5rem;
+/* Bold text within technical overview */
+.technical-overview strong {
+  color: white; /* Full white for emphasis */
+  font-weight: 700; /* Bold weight */
 }
 
-/* Style the bullet points to look cleaner */
-.about-container .technical-overview p:nth-child(3),
-.about-container .technical-overview p:nth-child(4) {
-  padding-left: 1rem;
-  position: relative;
+/* Contact section heading spacing */
+.about-container h2:last-of-type {
+  margin-top: 4rem; /* Large space above contact section */
+  margin-bottom: 1.5rem; /* Space below contact heading */
 }
 
-/* Add better spacing for technical details */
-.about-container .technical-overview p:last-child {
-  margin-bottom: 0; /* Remove bottom margin from last paragraph */
-}
-
-/* Scroll-to-top button */
-.scroll-to-top {
-  position: fixed; /* Fixes button position */
-  bottom: 20px; /* Positions it at the bottom */
-  right: 20px; /* Positions it to the right */
-  background: #4e54c8; /* Sets background color */
-  color: white; /* Sets text color */
-  border: none; /* Removes borders */
-  border-radius: 50%; /* Makes it circular */
-  width: 50px; /* Sets width */
-  height: 50px; /* Sets height */
-  font-size: 1.5rem; /* Sets font size */
-  cursor: pointer; /* Makes it clickable */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
-  transition: transform 0.3s ease; /* Smooth hover effect */
-}
-
-/* Hover effect for scroll button */
-.scroll-to-top:hover {
-  transform: scale(1.1); /* Enlarges button on hover */
-}
-
-/* Footer */
-.about-footer {
-  margin-top: 2rem; /* Adds space above footer */
-  text-align: center; /* Centers text */
-  color: white; /* Sets text color */
-  font-size: 0.9rem; /* Sets font size */
-  opacity: 0.8; /* Makes text slightly transparent */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .about-container .technical-overview {
-    max-width: 100%;
-    padding: 1.5rem;
-    margin: 2rem 0;
-  }
-  .about-container .technical-overview p {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-  /* Reduce spacing on mobile */
-  .about-container h2:not(:first-of-type) {
-    margin-top: 3rem;
-  }
+/* Tablet responsive styles - 2 columns for team */
+@media (max-width: 1024px) {
   .team-container {
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
   }
+}
+
+/* Tablet responsive styles - additional adjustments */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 2rem 1.5rem; /* Reduced padding for smaller screens */
+  }
+
+  /* Reduced spacing between sections on tablets */
+  .about-container h2:not(:first-of-type) {
+    margin-top: 3rem; /* Less space between sections */
+  }
+
+  /* Single column layout for team members on small tablets */
+  .team-container {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 1.5rem; /* Reduced gap */
+    margin-bottom: 2rem; /* Less bottom margin */
+  }
+
+  /* Smaller team member cards on tablets */
+  .team-member {
+    min-height: 280px; /* Reduced minimum height */
+    padding: 1.5rem 1rem; /* Less padding */
+  }
+
+  /* Smaller profile images on tablets */
+  .team-member img {
+    width: 100px; /* Smaller width */
+    height: 100px; /* Smaller height */
+  }
+
+  /* Reduced padding for technical overview on tablets */
+  .technical-overview {
+    padding: 2rem 1.5rem; /* Less padding */
+    margin: 2rem 0; /* Less vertical margin */
+  }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 480px) {
+  /* Minimal padding on mobile */
+  .about-page {
+    padding: 1rem 0.5rem; /* Reduced page padding */
+  }
+
+  /* Smaller container padding on mobile */
+  .about-container {
+    padding: 1.5rem 1rem; /* Minimal container padding */
+  }
+
+  /* Compact team member cards on mobile */
+  .team-member {
+    min-height: 240px; /* Further reduced height */
+    padding: 1.25rem 0.75rem; /* Minimal padding */
+  }
+
+  /* Minimal technical overview padding on mobile */
+  .technical-overview {
+    padding: 1.5rem 1rem; /* Minimal padding */
+  }
+
+  /* Smaller GitHub links on mobile */
+  .github-link {
+    padding: 0.625rem 1.25rem; /* Smaller button padding */
+    font-size: 0.9rem; /* Smaller text size */
+  }
+}
+
+/* Staggered animation for team member cards */
+.team-member {
+  animation: fadeInCard 0.6s ease-out forwards; /* Card entrance animation */
+  opacity: 0; /* Start invisible for animation */
+}
+
+/* Different animation delays for each team member */
+.team-member:nth-child(1) {
+  animation-delay: 0.1s;
+} /* First card */
+.team-member:nth-child(2) {
+  animation-delay: 0.2s;
+} /* Second card */
+.team-member:nth-child(3) {
+  animation-delay: 0.3s;
+} /* Third card */
+.team-member:nth-child(4) {
+  animation-delay: 0.4s;
+} /* Fourth card */
+
+/* Animation for individual team member cards */
+@keyframes fadeInCard {
+  from {
+    opacity: 0; /* Start invisible */
+    transform: translateY(20px); /* Start below final position */
+  }
+  to {
+    opacity: 1; /* End fully visible */
+    transform: translateY(0); /* End at final position */
+  }
+}
+
+/* Delayed animation for technical overview section */
+.technical-overview {
+  animation: fadeInUp 0.8s ease-out 0.5s forwards; /* Delayed entrance */
+  opacity: 0; /* Start invisible */
+}
+
+/* Remove default list styling for technical overview */
+.technical-overview ul {
+  list-style: none; /* Remove default bullets */
+  padding-left: 0; /* Remove default indentation */
+}
+
+/* Custom bullet points for technical overview lists */
+.technical-overview li {
+  position: relative; /* For positioning custom bullets */
+  padding-left: 1.5rem; /* Space for custom bullet */
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Custom bullet point styling */
+.technical-overview li::before {
+  content: '•'; /* Bullet character */
+  color: #4f46e5; /* Purple bullet color */
+  font-weight: bold; /* Bold bullet */
+  position: absolute; /* Absolute positioning */
+  left: 0; /* Position at left edge */
 }

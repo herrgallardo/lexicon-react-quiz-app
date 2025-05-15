@@ -1,7 +1,6 @@
-import React from 'react';
-import './About.css'; // Importerar CSS för styling
+import './About.css'; // Import CSS for component styling
 
-// Listan över team-medlemmar med GitHub-länkar
+// Array of team members with their information and GitHub links
 const teamMembers = [
   {
     id: 1,
@@ -24,7 +23,6 @@ const teamMembers = [
     image: '/images/jonathan.png',
     github: 'https://github.com/JonathanPersson12',
   },
-
   {
     id: 4,
     name: 'Mirjana Vasic',
@@ -34,37 +32,39 @@ const teamMembers = [
   },
 ];
 
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
 const About = () => {
   return (
     <div className="about-page">
+      {/* Main container for all about page content */}
       <div className="about-container">
-        {/* Titel och introduktion */}
-        <h1>About oss</h1>
+        {/* Page title and introduction */}
+        <h1>About us</h1>
         <p>
           We are a group of four individuals, each with different backgrounds
           and experiences, who have come together to work on our first shared
           project.
         </p>
 
-        {/* Team-sektion */}
+        {/* Team section with member cards */}
         <h2>Our Team</h2>
         <div className="team-container">
+          {/* Map through team members array to create individual cards */}
           {teamMembers.map((member) => (
             <div className="team-member" key={member.id}>
+              {/* Team member profile image */}
               <img src={member.image} alt={member.name} />
+
+              {/* Container for member name and role */}
               <div className="member-info">
                 <h3>{member.name}</h3>
                 <p>{member.role}</p>
               </div>
-              {/* Fristående GitHub-knapp för varje medlem */}
+
+              {/* Link to member's GitHub profile */}
               <a
                 href={member.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                target="_blank" // Opens in new tab
+                rel="noopener noreferrer" // Security attributes for external links
                 className="github-link"
               >
                 Visit GitHub
@@ -73,9 +73,11 @@ const About = () => {
           ))}
         </div>
 
-        {/* Technical overview section */}
+        {/* Technical overview section describing the project */}
         <div className="technical-overview">
           <h2>Our Project</h2>
+
+          {/* Project description paragraph */}
           <p>
             We've developed a comprehensive quiz application that provides an
             interactive learning experience with dynamic question generation and
@@ -83,6 +85,8 @@ const About = () => {
             quiz experience by selecting categories, difficulty levels, and
             question types from the Open Trivia Database API.
           </p>
+
+          {/* Key features list */}
           <p>
             <strong>Key Features:</strong>
             <br />
@@ -97,6 +101,8 @@ const About = () => {
             • Session persistence to resume incomplete quizzes
             <br />• Animated UI transitions and smooth user interactions
           </p>
+
+          {/* Technology stack information */}
           <p>
             <strong>Technology Stack:</strong>
             <br />• <strong>Frontend:</strong> React 19 with functional
@@ -118,17 +124,12 @@ const About = () => {
           </p>
         </div>
 
-        {/* Kontakt-sektion */}
+        {/* Contact section */}
         <h2>Contact</h2>
         <p>
           Do you have any questions or want to collaborate with us? Feel free to
           reach out! <br />
         </p>
-
-        {/* Scroll-to-top-knapp */}
-        <button onClick={scrollToTop} className="scroll-to-top">
-          ↑ Back to Top
-        </button>
       </div>
     </div>
   );
