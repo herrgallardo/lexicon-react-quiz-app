@@ -15,10 +15,10 @@ import { AuthContext } from '../context/AuthContext';
 import { saveScore, getTopScores } from '../services/firestoreService';
 import './Quiz.css';
 import QuizTimer from '../components/QuizTimer';
-
+ 
 // Storage key for saving quiz state to localStorage
 const QUIZ_STATE_KEY = 'lexicon_quiz_state';
-
+ 
 const Quiz = () => {
   // The useQuiz hook provides all the quiz functionality
   // It manages questions, tracking score, loading questions, etc.
@@ -39,36 +39,36 @@ const Quiz = () => {
     setScore, // Function to manually set current score
     setQuizCompleted, // Function to manually set quiz completed state
   } = useQuiz();
-
+ 
   // Get the currently authenticated user from the AuthContext
   const { user, authInitialized } = useContext(AuthContext);
-
+ 
   // State for storing top scores from the leaderboard
   const [topScores, setTopScores] = useState([]);
-
+ 
   // State to track whether quiz has been started (vs setup screen)
   const [quizStarted, setQuizStarted] = useState(false);
-
+ 
   // State to toggle leaderboard visibility
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-
+ 
   // State to track initial load status to prevent restoration during active quiz
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-
+ 
   // State to control confirmation modal visibility
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-
+ 
   // State to track when the quiz timer should reset (when new quiz starts)
   const [timerResetTrigger, setTimerResetTrigger] = useState(0);
-
+ 
   // Hook for programmatic navigation between routes
   const navigate = useNavigate();
-
+ 
   // Helper function to get a stable user identifier
   const getUserKey = useCallback((user) => {
     return user?.email || user?.uid || 'anonymous';
   }, []);
-
+ 
   // Effect to check if user is logged in and redirect if not
   // This runs when the component mounts and whenever user or authInitialized changes
   useEffect(() => {
@@ -78,7 +78,7 @@ const Quiz = () => {
       navigate('/login');
     }
   }, [user, authInitialized, navigate]);
-
+ 
   // Effect to load quiz state from localStorage when component mounts
   useEffect(() => {
     const restoreQuizState = () => {
@@ -88,14 +88,14 @@ const Quiz = () => {
         setInitialLoadComplete(true);
         return;
       }
-
+ 
       try {
         // Try to get saved quiz state from localStorage
         const savedState = localStorage.getItem(QUIZ_STATE_KEY);
-
+ 
         if (savedState) {
           const parsedState = JSON.parse(savedState);
-
+ 
           // Validate the saved state more thoroughly
           if (
             parsedState.questions &&
@@ -111,7 +111,7 @@ const Quiz = () => {
             setScore(parsedState.score);
             setQuizCompleted(parsedState.quizCompleted);
             setQuizStarted(parsedState.quizStarted);
-
+ 
             console.log('Restored quiz state from localStorage');
           } else {
             console.log('Invalid saved state found, clearing localStorage');
@@ -126,7 +126,7 @@ const Quiz = () => {
         setInitialLoadComplete(true);
       }
     };
-
+ 
     // Only restore state if user is logged in and initial load isn't complete
     if (user && !initialLoadComplete) {
       restoreQuizState();
@@ -143,7 +143,7 @@ const Quiz = () => {
     setQuizStarted,
     getUserKey,
   ]);
-
+ 
   // Effect to save quiz state to localStorage whenever relevant state changes
   useEffect(() => {
     // Only save state if quiz has started and user is logged in
@@ -158,7 +158,7 @@ const Quiz = () => {
         userId: getUserKey(user), // Save user identifier to verify ownership on reload
         timestamp: Date.now(), // For potential expiration checks
       };
-
+ 
       localStorage.setItem(QUIZ_STATE_KEY, JSON.stringify(stateToSave));
       console.log('Saved quiz state to localStorage');
     }
@@ -172,7 +172,7 @@ const Quiz = () => {
     user,
     getUserKey,
   ]);
-
+ 
   // Effect to load top scores from Firebase when component mounts
   useEffect(() => {
     const fetchTopScores = async () => {
@@ -187,32 +187,36 @@ const Quiz = () => {
     };
     fetchTopScores();
   }, []);
-
+ 
   // Effect to save the user's score when quiz is completed
   // This runs whenever quizCompleted, user, score, or questions.length changes
   useEffect(() => {
     // Only save score if quiz is completed, user is logged in, and there were questions
     if (quizCompleted && user && questions.length > 0) {
+      // Get display name or extract from email
+      const displayName =
+        user.displayName || user.email?.split('@')[0] || 'Anonymous';
+ 
       // Save to Firestore database
       saveScore({
         userId: user.uid,
         email: user.email,
-        displayName: user.displayName || user.email,
+        displayName: displayName,
         score,
       }).catch((error) => {
         console.error('Error saving score:', error);
       });
-
+ 
       // Clear localStorage when quiz is completed
       localStorage.removeItem(QUIZ_STATE_KEY);
     }
   }, [quizCompleted, user, score, questions.length]);
-
+ 
   // Effect to reset question answered state when question changes
   useEffect(() => {
     // This could be used for per-question timers if implemented
   }, [currentIndex]);
-
+ 
   // Validate current state to prevent edge cases
   useEffect(() => {
     // If we have questions but current index is out of bounds, complete the quiz
@@ -224,7 +228,7 @@ const Quiz = () => {
       console.warn('Current index out of bounds, completing quiz');
       setQuizCompleted(true);
     }
-
+ 
     // If quiz is started but no questions, reset to setup
     if (quizStarted && questions.length === 0 && !loading && !error) {
       console.warn('Quiz started but no questions available, resetting');
@@ -242,12 +246,12 @@ const Quiz = () => {
     setQuizCompleted,
     setQuizStarted,
   ]);
-
+ 
   // Handler for when user starts the quiz with selected options
   const handleStartQuiz = (options) => {
     // Clear any existing quiz state in localStorage
     localStorage.removeItem(QUIZ_STATE_KEY);
-
+ 
     // Load new questions with the selected options
     loadQuiz(options);
     // Update state to show questions instead of setup screen
@@ -257,19 +261,19 @@ const Quiz = () => {
     // Trigger timer reset for new quiz
     setTimerResetTrigger((prev) => prev + 1);
   };
-
+ 
   // Handler for when user answers a question
   const handleAnswer = (answer) => {
     // Pass the answer to the useQuiz hook's answerQuestion function
     // This handles updating score, moving to next question, etc.
     answerQuestion(answer);
   };
-
+ 
   // Handler for when user wants to play again with same settings
   const handlePlayAgain = () => {
     // Clear existing quiz state in localStorage
     localStorage.removeItem(QUIZ_STATE_KEY);
-
+ 
     // Reset the quiz state (score, current question, etc.)
     resetQuiz();
     // Load new questions with the same options as before
@@ -277,48 +281,48 @@ const Quiz = () => {
     // Trigger timer reset for new quiz
     setTimerResetTrigger((prev) => prev + 1);
   };
-
+ 
   // Handler for when user wants to create a new quiz with different settings
   const handleNewQuiz = () => {
     // Clear existing quiz state in localStorage
     localStorage.removeItem(QUIZ_STATE_KEY);
-
+ 
     // Go back to the setup screen
     setQuizStarted(false);
     // Reset the quiz state
     resetQuiz();
   };
-
+ 
   // Handler to toggle the leaderboard visibility
   const toggleLeaderboard = () => {
     setShowLeaderboard(!showLeaderboard);
   };
-
+ 
   // Show the confirmation modal when user clicks Cancel Quiz
   const handleCancelQuizClick = () => {
     setIsConfirmModalOpen(true);
   };
-
+ 
   // Handler for when user confirms they want to cancel the quiz
   const handleConfirmCancelQuiz = () => {
     // Clear existing quiz state in localStorage
     localStorage.removeItem(QUIZ_STATE_KEY);
-
+ 
     // Go back to the setup screen
     setQuizStarted(false);
     // Reset the quiz state
     resetQuiz();
   };
-
+ 
   // Handler for when the quiz timer runs out
   const handleQuizTimeUp = useCallback(() => {
     console.log('Quiz time expired - completing quiz');
     setQuizCompleted(true);
   }, [setQuizCompleted]);
-
+ 
   // Calculate total quiz duration (10 seconds per question)
   const totalQuizDuration = questions.length * 10;
-
+ 
   // Show loading spinner while Firebase authentication is initializing
   if (!authInitialized) {
     return (
@@ -330,14 +334,14 @@ const Quiz = () => {
       </QuizLayout>
     );
   }
-
+ 
   // Check if we have a valid current question
   const hasValidQuestion =
     currentQuestion &&
     questions.length > 0 &&
     currentIndex >= 0 &&
     currentIndex < questions.length;
-
+ 
   return (
     <QuizLayout>
       <div className="quiz-page">
@@ -405,12 +409,12 @@ const Quiz = () => {
                 onTimeUp={handleQuizTimeUp}
                 timerResetTrigger={timerResetTrigger}
               />
-
+ 
               <QuestionCard
                 question={currentQuestion}
                 onAnswer={handleAnswer}
               />
-
+ 
               {/* Cancel quiz button - now placed within the quiz flow */}
               <button
                 className="cancel-quiz-btn"
@@ -431,7 +435,7 @@ const Quiz = () => {
           )}
         </div>
       </div>
-
+ 
       {/* Confirmation Modal for canceling quiz */}
       <ConfirmationModal
         isOpen={isConfirmModalOpen}
@@ -445,5 +449,7 @@ const Quiz = () => {
     </QuizLayout>
   );
 };
-
+ 
 export default Quiz;
+ 
+ 
