@@ -3,25 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
 import ConfirmationModal from './ConfirmationModal';
+import useMediaQuery from '../hooks/useMediaQuery'; // ← new
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './Header.css';
 
 const Header = () => {
   const { user } = useContext(AuthContext);
+  const isDesktop = useMediaQuery('(min-width: 769px)');
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
-  // close mobile menu when switching to desktop
+  // auto-close mobile menu when switching to desktop
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 769px)');
-    const handler = (e) => {
-      if (e.matches) setMenuOpen(false);
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+    if (isDesktop) {
+      setMenuOpen(false);
+    }
+  }, [isDesktop]);
 
   const toggleMenu = () => setMenuOpen((open) => !open);
   const openLogoutModal = () => setShowLogoutModal(true);
@@ -31,17 +30,25 @@ const Header = () => {
     navigate('/login');
   };
 
+  const LogoutButton = ({ className }) => (
+    <button
+      className={`logout-btn ${className}`}
+      onClick={openLogoutModal}
+      aria-label="Log out"
+    >
+      <FontAwesomeIcon icon={faSignOutAlt} />
+    </button>
+  );
+
   return (
     <header className="header">
       <div className="header-content">
-        {/* Logo positioned absolutely */}
         <div className="logo">
           <a href="/">
             <img src="/images/logo.png" alt="Quizify Logo" />
           </a>
         </div>
 
-        {/* Navigation centered in grid */}
         <ul className={`nav-list${menuOpen ? ' active' : ''}`}>
           <li className="nav-item">
             <a
@@ -71,21 +78,13 @@ const Header = () => {
             </a>
           </li>
           {user && (
-            <li className="nav-item">
-              <button
-                className="logout-btn mobile"
-                onClick={openLogoutModal}
-                aria-label="Log out"
-              >
-                <FontAwesomeIcon icon={faSignOutAlt} />
-              </button>
+            <li className="nav-item mobile-logout-item">
+              <LogoutButton className="mobile-logout" />
             </li>
           )}
         </ul>
 
-        {/* Actions on the right */}
         <div className="actions">
-          {/* Hamburger for mobile */}
           <button
             className="hamburger"
             onClick={toggleMenu}
@@ -95,17 +94,7 @@ const Header = () => {
             <span className="bar" />
             <span className="bar" />
           </button>
-
-          {/* Desktop logout */}
-          {user && (
-            <button
-              className="logout-btn desktop"
-              onClick={openLogoutModal}
-              aria-label="Log out"
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} />
-            </button>
-          )}
+          {user && <LogoutButton className="desktop-logout" />}
         </div>
 
         <ConfirmationModal
