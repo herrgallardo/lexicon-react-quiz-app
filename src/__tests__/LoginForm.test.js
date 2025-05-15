@@ -15,7 +15,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  onAuthStateChanged,
 } from 'firebase/auth';
 import { saveUserProfile } from '../services/firestoreService';
 
