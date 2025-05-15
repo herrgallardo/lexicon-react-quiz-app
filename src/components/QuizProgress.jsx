@@ -1,9 +1,18 @@
 // This component displays quiz progress information to the user
 // It shows the current question number, total questions, score, and a visual progress bar
+// Now also includes the circular timer between question count and score
 import React from 'react';
+import QuizTimer from './QuizTimer';
 import './QuizProgress.css';
 
-const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
+const QuizProgress = ({
+  currentIndex,
+  totalQuestions,
+  score,
+  timerDuration,
+  onTimeUp,
+  timerResetTrigger,
+}) => {
   // Validate props to prevent edge cases
   const validCurrentIndex = Math.max(
     0,
@@ -25,7 +34,7 @@ const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
 
   return (
     <div className="quiz-progress">
-      {/* Top section with question count and score information */}
+      {/* Top section with question count, timer, and score information */}
       <div className="quiz-stats">
         {/* Left side - shows current question number and total questions */}
         <div className="question-count">
@@ -35,6 +44,15 @@ const QuizProgress = ({ currentIndex, totalQuestions, score }) => {
             {validCurrentIndex + 1} / {validTotalQuestions}
           </strong>
         </div>
+
+        {/* Center - Circular Timer */}
+        {timerDuration && onTimeUp && (
+          <QuizTimer
+            duration={timerDuration}
+            onTimeUp={onTimeUp}
+            resetTrigger={timerResetTrigger}
+          />
+        )}
 
         {/* Right side - shows current score and total possible score */}
         <div className="score-display">
