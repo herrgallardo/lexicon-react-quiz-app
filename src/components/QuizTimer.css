@@ -1,0 +1,189 @@
+/* === Quiz Timer Styles === */
+.quiz-timer {
+  width: 100%;
+  max-width: 100px; /* Smaller size when integrated into quiz-stats */
+  text-align: center;
+}
+
+/* === Circular Timer Container === */
+.circular-timer {
+  position: relative;
+  width: 100px; /* Smaller size for integration */
+  height: 100px;
+  margin: 0 auto;
+}
+
+/* === SVG Circular Progress === */
+.circular-progress {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from top */
+}
+
+/* === Background Circle === */
+.circular-progress-background {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 6; /* Thinner stroke for smaller size */
+}
+
+/* === Progress Circle === */
+.circular-progress-bar {
+  fill: none;
+  stroke: url(#normalGradient);
+  stroke-width: 6; /* Thinner stroke for smaller size */
+  stroke-linecap: round;
+  transition:
+    stroke-dashoffset 1s linear,
+    stroke 0.5s ease;
+}
+
+/* === Timer Text in Center === */
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1rem; /* Smaller text for integration */
+  font-weight: 700;
+  color: #ffffff;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* === Warning States === */
+/* Medium warning (under 50%) */
+.quiz-timer.warning .circular-progress-bar {
+  stroke: url(#warningGradient);
+}
+
+.quiz-timer.warning .timer-text {
+  color: #ffcc00;
+}
+
+/* Critical (under 20%) */
+.quiz-timer.warning[data-critical='true'] .circular-progress-bar {
+  stroke: url(#criticalGradient);
+}
+
+.quiz-timer.warning[data-critical='true'] .timer-text {
+  color: #ff3b30;
+  animation: gentle-pulse 1.5s infinite;
+}
+
+/* Final countdown (last 10 seconds) */
+.quiz-timer.warning[data-final='true'] .circular-progress-bar {
+  stroke: #ff3b30;
+  animation: pulse-circle 0.7s infinite;
+}
+
+.quiz-timer.warning[data-final='true'] .timer-text {
+  font-size: 1.3rem; /* Slightly larger for final countdown */
+  color: #ff3b30;
+  animation: final-countdown 0.7s infinite;
+  font-weight: 800;
+}
+
+/* === Animations === */
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes final-countdown {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulse-circle {
+  0% {
+    stroke-width: 6;
+  } /* Adjusted for smaller size */
+  50% {
+    stroke-width: 8;
+  }
+  100% {
+    stroke-width: 6;
+  }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .circular-timer {
+    width: 80px; /* Even smaller on mobile */
+    height: 80px;
+  }
+
+  .timer-text {
+    font-size: 0.9rem;
+  }
+
+  .quiz-timer.warning[data-final='true'] .timer-text {
+    font-size: 1.1rem;
+  }
+
+  .circular-progress-background,
+  .circular-progress-bar {
+    stroke-width: 5;
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-timer {
+    width: 70px; /* Smallest size for mobile */
+    height: 70px;
+  }
+
+  .timer-text {
+    font-size: 0.8rem;
+  }
+
+  .quiz-timer.warning[data-final='true'] .timer-text {
+    font-size: 1rem;
+  }
+
+  .circular-progress-background,
+  .circular-progress-bar {
+    stroke-width: 4;
+  }
+
+  @keyframes pulse-circle {
+    0% {
+      stroke-width: 4;
+    }
+    50% {
+      stroke-width: 6;
+    }
+    100% {
+      stroke-width: 4;
+    }
+  }
+}
+
+/* === Accessibility - Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .quiz-timer.warning .timer-text,
+  .quiz-timer.warning[data-critical='true'] .timer-text,
+  .quiz-timer.warning[data-final='true'] .timer-text,
+  .quiz-timer.warning[data-final='true'] .circular-progress-bar {
+    animation: none;
+  }
+
+  .circular-progress-bar {
+    transition:
+      stroke-dashoffset 0.5s linear,
+      stroke 0.3s ease;
+  }
+}

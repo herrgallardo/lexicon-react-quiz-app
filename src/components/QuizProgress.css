@@ -5,17 +5,17 @@
 
 /* Main container for the entire progress section */
 .quiz-progress {
-  max-width: min(500px, 100% - 1rem); /* Responsive maximum width */
+  max-width: min(600px, 100% - 1rem); /* Responsive maximum width */
   width: 100%; /* Take full available width up to max-width */
   margin: 0 auto 1rem auto; /* Center horizontally and add space below */
   padding: 0 0.5rem; /* Add horizontal padding */
   box-sizing: border-box; /* Include padding in width calculation */
 }
 
-/* Container for question count and score statistics */
+/* Container for question count, timer, and score statistics */
 .quiz-stats {
   display: flex; /* Use flexbox layout */
-  justify-content: space-between; /* Push items to opposite ends */
+  justify-content: space-between; /* Distribute space evenly */
   align-items: center; /* Center items vertically */
   margin-bottom: 0.75rem; /* Space below stats section */
   gap: 1rem; /* Responsive gap between elements */
@@ -36,12 +36,12 @@
   display: flex; /* Use flexbox layout */
   flex-direction: column; /* Stack label and value vertically */
   align-items: center; /* Center items horizontally */
-  min-width: clamp(90px, 22vw, 110px); /* Responsive minimum width */
+  min-width: clamp(80px, 20vw, 100px); /* Responsive minimum width */
   backdrop-filter: blur(8px); /* Blur effect for modern browsers */
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.25),
     0 1px 2px rgba(0, 0, 0, 0.3);
-  flex: 1; /* Equal width distribution */
+  flex: 0 0 auto; /* Don't grow or shrink, maintain size */
   text-align: center;
 }
 
@@ -142,7 +142,7 @@
   .question-count,
   .score-display {
     padding: 0.4rem 0.6rem; /* Smaller padding */
-    min-width: 80px; /* Smaller minimum width */
+    min-width: 70px; /* Smaller minimum width */
   }
 
   .progress-bar-container {

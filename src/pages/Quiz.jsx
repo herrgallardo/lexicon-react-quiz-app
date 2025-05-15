@@ -14,6 +14,7 @@ import { useQuiz } from '../hooks/useTriviaHooks';
 import { AuthContext } from '../context/AuthContext';
 import { saveScore, getTopScores } from '../services/firestoreService';
 import './Quiz.css';
+import QuizTimer from '../components/QuizTimer';
 
 // Storage key for saving quiz state to localStorage
 const QUIZ_STATE_KEY = 'lexicon_quiz_state';
@@ -56,6 +57,9 @@ const Quiz = () => {
 
   // State to control confirmation modal visibility
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  // State to track when the quiz timer should reset (when new quiz starts)
+  const [timerResetTrigger, setTimerResetTrigger] = useState(0);
 
   // Hook for programmatic navigation between routes
   const navigate = useNavigate();
@@ -250,6 +254,8 @@ const Quiz = () => {
     setQuizStarted(true);
     // Hide leaderboard when starting quiz
     setShowLeaderboard(false);
+    // Trigger timer reset for new quiz
+    setTimerResetTrigger((prev) => prev + 1);
   };
 
   // Handler for when user answers a question
@@ -268,6 +274,8 @@ const Quiz = () => {
     resetQuiz();
     // Load new questions with the same options as before
     loadQuiz(quizOptions);
+    // Trigger timer reset for new quiz
+    setTimerResetTrigger((prev) => prev + 1);
   };
 
   // Handler for when user wants to create a new quiz with different settings
@@ -301,6 +309,15 @@ const Quiz = () => {
     // Reset the quiz state
     resetQuiz();
   };
+
+  // Handler for when the quiz timer runs out
+  const handleQuizTimeUp = useCallback(() => {
+    console.log('Quiz time expired - completing quiz');
+    setQuizCompleted(true);
+  }, [setQuizCompleted]);
+
+  // Calculate total quiz duration (10 seconds per question)
+  const totalQuizDuration = questions.length * 10;
 
   // Show loading spinner while Firebase authentication is initializing
   if (!authInitialized) {
@@ -384,7 +401,11 @@ const Quiz = () => {
                 currentIndex={currentIndex}
                 totalQuestions={questions.length}
                 score={score}
+                timerDuration={totalQuizDuration}
+                onTimeUp={handleQuizTimeUp}
+                timerResetTrigger={timerResetTrigger}
               />
+
               <QuestionCard
                 question={currentQuestion}
                 onAnswer={handleAnswer}
