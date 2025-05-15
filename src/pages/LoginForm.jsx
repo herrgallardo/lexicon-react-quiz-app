@@ -1,96 +1,80 @@
 // src/pages/LoginForm.jsx
-import React, { useState, useEffect } from 'react'; // React and hooks for state management
+import React, { useState, useEffect } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
-} from 'firebase/auth'; // Firebase authentication methods
-import { saveUserProfile } from '../services/firestoreService'; // Function to save user profile to Firestore
-import { auth } from '../firebase/firebaseInit'; // Firebase authentication instance
-import { useNavigate } from 'react-router-dom'; // React Router for navigation
-import './LoginForm.css'; // Custom UI styles for the LoginForm component
+} from 'firebase/auth';
+import { saveUserProfile } from '../services/firestoreService';
+import { auth } from '../firebase/firebaseInit';
+import { useNavigate } from 'react-router-dom';
+import './LoginForm.css';
+import LoginMsgModal from '../components/LoginMsgModal';
 
 function LoginForm() {
-  // These states variables manage the email, password, and user authentication input fields.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isNewUser, setIsNewUser] = useState(false);
-
-  // This state keeps track of the currently authenticated user.
   const [user, setUser] = useState(null);
-
-  // This state manages the password reset, email input field and visibility of the password reset form..
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
   const [error, setError] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalType, setModalType] = useState('info');
 
-  // Router for navigation
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-      if (user) {
-        navigate('/quiz');
-      }
+      if (user) navigate('/quiz');
     });
-
-    // only call if unsubscribe is a function
-    return () => {
-      if (typeof unsubscribe === 'function') {
-        unsubscribe();
-      }
-    };
+    return () => unsubscribe && unsubscribe();
   }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    
     if (isNewUser) {
       try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
-        // Save user profile to Firestore and alert that they have created an account
         await saveUserProfile({
           uid: user.uid,
-          displayName: email.split('@')[0], // Default name from email
+          displayName: email.split('@')[0],
           email: user.email,
         });
-        alert('Account created!');
+        setModalMessage('Account created successfully!');
+        setModalType('success');
       } catch (err) {
         setError(err.message);
+        setModalMessage('Failed to create account.');
+        setModalType('error');
       }
     } else {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert('Logged in!');
       } catch (err) {
         setError(err.message);
+        setModalMessage('Login failed. Please check your credentials.');
+        setModalType('error');
       }
     }
-  };
-
-  const handleLogout = async () => {
-    await auth.signOut();
-    alert('Logged out');
-    setUser(null);
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
       await sendPasswordResetEmail(auth, resetEmail);
-      alert('Reset email sent!');
+      setModalMessage('Password reset email sent!');
+      setModalType('info');
       setShowReset(false);
     } catch (err) {
       setError(err.message);
+      setModalMessage('Failed to send reset email.');
+      setModalType('error');
     }
   };
 
@@ -98,16 +82,11 @@ function LoginForm() {
     <div className="login-layout">
       <div className="login-container">
         <div className="login-box">
-          {/* Form for login or registration */}
           <form onSubmit={showReset ? handleResetPassword : handleSubmit}>
-            <h1>
-              {showReset ? 'Reset Password' : isNewUser ? 'Sign Up' : 'Login'}
-            </h1>
+            <h1>{showReset ? 'Reset Password' : isNewUser ? 'Sign Up' : 'Login'}</h1>
 
-            {/* Display error message if any */}
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            {/* Input fields for email and password */}
             {!showReset && (
               <>
                 <div className="input-box">
@@ -130,7 +109,6 @@ function LoginForm() {
               </>
             )}
 
-            {/* Input field for password reset email */}
             {showReset && (
               <div className="input-box">
                 <input
@@ -142,18 +120,14 @@ function LoginForm() {
               </div>
             )}
 
-            {/* Submit button */}
             <button type="submit" className="login-btn">
               {showReset ? 'Send Reset Email' : isNewUser ? 'Sign Up' : 'Login'}
             </button>
 
-            {/* Toggle link to switch between login and registration */}
             {!showReset && (
               <div className="register-link">
                 <p>
-                  {isNewUser
-                    ? 'Already have an account?'
-                    : "Don't have an account?"}{' '}
+                  {isNewUser ? 'Already have an account?' : "Don't have an account?"}{' '}
                   <a href="#" onClick={() => setIsNewUser(!isNewUser)}>
                     {isNewUser ? 'Login' : 'Register'}
                   </a>
@@ -161,12 +135,9 @@ function LoginForm() {
               </div>
             )}
 
-            {/* Password reset link */}
             <div className="reset-password">
               <p>
-                {showReset
-                  ? 'Enter your email to reset password'
-                  : 'Forgot password?'}{' '}
+                {showReset ? 'Enter your email to reset password' : 'Forgot password?'}{' '}
                 <a href="#" onClick={() => setShowReset(!showReset)}>
                   {showReset ? 'Cancel' : 'Reset'}
                 </a>
@@ -175,10 +146,17 @@ function LoginForm() {
           </form>
         </div>
       </div>
+
+      {modalMessage && (
+        <LoginMsgModal
+          message={modalMessage}
+          type={modalType}
+          duration={3500}
+          onClose={() => setModalMessage('')}
+        />
+      )}
     </div>
   );
 }
 
-// Export the LoginForm component as the default export
-// This allows other components or files to import and use the LoginForm component.
 export default LoginForm;
