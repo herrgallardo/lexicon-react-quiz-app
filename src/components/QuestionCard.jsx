@@ -149,12 +149,6 @@ const QuestionCard = ({ question, onAnswer }) => {
       {/* Feedback container only appears after answering */}
       {showFeedback && (
         <div className="feedback-container">
-          <div
-            className={`feedback-text ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}
-          >
-            {isCorrect ? <span>✓ Correct!</span> : <span>✗ Incorrect</span>}
-          </div>
-
           <button
             className="next-question-btn"
             onClick={handleNextQuestion}
