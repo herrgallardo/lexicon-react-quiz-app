@@ -43,7 +43,11 @@ test('AuthProvider sets user and authInitialized in context', async () => {
   // ── Assert ──
   // Wait for the effect to run and update contextValue
   await waitFor(() => {
-    expect(contextValue.user).toBe(fakeUser);
-    expect(contextValue.authInitialized).toBe(true);
+    expect(contextValue).toEqual(
+      expect.objectContaining({
+        user: fakeUser,
+        authInitialized: true,
+      })
+    );
   });
 });
