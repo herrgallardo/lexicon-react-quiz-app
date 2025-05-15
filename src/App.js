@@ -15,8 +15,9 @@ import Footer from './components/Footer';
 import DevMenu from './components/DevMenu';
 
 // Pages
+import Home from './pages/Home';
 import Quiz from './pages/Quiz';
-import Auth from './pages/Auth';
+
 import LoginForm from './pages/LoginForm';
 import About from './pages/About';
 
@@ -27,7 +28,7 @@ function App() {
         <Header /> {/* Global header (e.g. logout, nav) */}
         <div className="container">
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/about" element={<About />} />
